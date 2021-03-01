@@ -1,0 +1,33 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<ViewSettingsDialog
+		confirm="handleFilterDialogConfirm">
+		<filterItems>
+			<ViewSettingsFilterItem
+				text="Nº Material"
+				key="material"
+				multiSelect="false"
+                items="{ path: '/Material',
+								parameters: {
+                                    $apply: 'groupby((material))'
+								} }">
+				<items>
+					<ViewSettingsItem id="viewFilter1" text="{material}" key="material"/>
+				</items>
+			</ViewSettingsFilterItem>
+			<ViewSettingsFilterItem
+				text="Quantidade"
+				key="quantidade"
+				multiSelect="false"
+                items="{ path: '/Material',
+								parameters: {
+                                    $apply: 'groupby((quantidade))'
+								} }">
+				<items>
+					<ViewSettingsItem id="viewFilter2" text="{quantidade}" key="quantidade"/>
+				</items>
+			</ViewSettingsFilterItem>
+		</filterItems>
+	</ViewSettingsDialog>
+</core:FragmentDefinition>

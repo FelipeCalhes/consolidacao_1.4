@@ -1,0 +1,89 @@
+_schema-version: "3.2"
+ID: consolidacao
+version: 0.0.1
+modules:
+- name: consolidacao-approuter
+  type: approuter.nodejs
+  path: consolidacao-approuter
+  requires:
+  - name: consolidacao_html_repo_runtime
+  - name: xsmotor-regras
+  - name: Consolidado-destination
+    group: destinations
+    properties:
+      forwardAuthToken: true
+      name: motorderegras
+      url: https://xsmotor-regras.cfapps.eu10.hana.ondemand.com
+  - name: ConsolidadoWoItem-destination
+    group: destinations
+    properties:
+      forwardAuthToken: true
+      name: woitem
+      url: https://wo-item-count.cfapps.eu10.hana.ondemand.com
+  - name: WorkOrder-destination
+    group: destinations
+    properties:
+      forwardAuthToken: true
+      name: workorder
+      url: https://work-order.cfapps.eu10.hana.ondemand.com
+  parameters:
+    disk-quota: 256M
+    memory: 256M
+- name: consolidacao_ui_deployer
+  type: com.sap.application.content
+  path: .
+  requires:
+  - name: consolidacao_html_repo_host
+    parameters:
+      content-target: true
+  build-parameters:
+    build-result: resources
+    requires:
+    - artifacts:
+      - consolidacao-content.zip
+      name: consolidacao
+      target-path: resources/
+- name: consolidacao
+  type: html5
+  path: consolidacao
+  build-parameters:
+    builder: custom
+    commands:
+    - npm run build
+    supported-platforms: []
+resources:
+- name: xsmotor-regras
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: xsuaa
+    service-plan: application
+- name: consolidacao_html_repo_runtime
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: html5-apps-repo
+    service-plan: app-runtime
+- name: Consolidado-destination
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: destination
+    service-plan: lite
+- name: ConsolidadoWoItem-destination
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: destination
+    service-plan: lite
+- name: WorkOrder-destination
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: destination
+    service-plan: lite
+- name: consolidacao_html_repo_host
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: html5-apps-repo
+    service-plan: app-host
+build-parameters:
+  before-all:
+  - builder: custom
+    commands:
+    - npm install

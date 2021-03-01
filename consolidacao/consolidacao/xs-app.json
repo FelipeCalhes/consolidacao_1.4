@@ -1,0 +1,33 @@
+{
+  "welcomeFile": "/index.html",
+  "authenticationMethod": "route",
+  "logout": {
+    "logoutEndpoint": "/do/logout"
+  },
+  "routes": [   
+    {
+      "source": "^/wo-item-count/(.*)$",
+      "target": "/wo-item-count/$1",
+      "destination": "woitem",
+      "authenticationType": "xsuaa"
+    },
+    {
+      "source": "^/motor-de-regras/(.*)$",
+      "target": "/motor-de-regras/$1",
+      "destination": "motorderegras",
+      "authenticationType": "xsuaa"
+    },
+    {
+      "source": "^/work-order/(.*)$",
+      "target": "/work-order/$1",
+      "destination": "workorder",
+      "authenticationType": "xsuaa"
+    },
+    {
+      "source": "^(.*)$",
+      "target": "$1",
+      "service": "html5-apps-repo-rt",
+      "authenticationType": "xsuaa"
+    }
+  ]
+}

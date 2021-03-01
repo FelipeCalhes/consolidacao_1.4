@@ -1,0 +1,90 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<ViewSettingsDialog
+		confirm="handleFilterDialogConfirm">
+		<filterItems>
+			<ViewSettingsFilterItem
+				text="WO"
+				key="workOrderID"
+				multiSelect="false"
+                items="{ path: '/TotalItemView' }">
+				<items>
+					<ViewSettingsItem id="viewFilter1" text="{workOrderID}" key="workOrderID"/>
+				</items>
+			</ViewSettingsFilterItem>
+			<ViewSettingsFilterItem
+				text="Tipo de WO"
+				key="tipoWo"
+				multiSelect="false"
+                items="{ path: '/TotalItemView',
+								parameters: {
+                                    $apply: 'groupby((tipoWo))'
+								} }">
+				<items>
+					<ViewSettingsItem id="viewFilter2" text="{tipoWo}" key="tipoWo"/>
+				</items>
+			</ViewSettingsFilterItem>
+			<ViewSettingsFilterItem
+				text="Técnico"
+				key="idTecnico"
+				multiSelect="false"
+                items="{ path: '/TotalItemView',
+								parameters: {
+                                    $apply: 'groupby((idTecnico))'
+								} }">
+				<items>
+					<ViewSettingsItem id="viewFilter3" text="{idTecnico}" key="idTecnico"/>
+				</items>
+			</ViewSettingsFilterItem>
+			<ViewSettingsFilterItem
+				text="EPO"
+				key="fornecedorSAP"
+				multiSelect="false"
+                items="{ path: '/TotalItemView',
+								parameters: {
+                                    $apply: 'groupby((fornecedorSAP))'
+								} }">
+				<items>
+					<ViewSettingsItem id="viewFilter4" text="{fornecedorSAP}" key="fornecedorSAP"/>
+				</items>
+			</ViewSettingsFilterItem>
+			<ViewSettingsFilterItem
+				text="Data de Atendimento"
+				key="dataAtendimento"
+				multiSelect="false"
+                items="{ path: '/TotalItemView',
+								parameters: {
+                                    $apply: 'groupby((dataAtendimento))'
+								} }">
+				<items>
+					<ViewSettingsItem id="viewFilter5" text="{dataAtendimento}" key="dataAtendimento"/>
+				</items>
+			</ViewSettingsFilterItem>
+			<ViewSettingsFilterItem
+				text="Município"
+				key="municipio"
+				multiSelect="false"
+                items="{ path: '/TotalItemView',
+								parameters: {
+                                    $apply: 'groupby((municipio))'
+								} }">
+				<items>
+					<ViewSettingsItem id="viewFilter6" text="{municipio}" key="municipio"/>
+				</items>
+			</ViewSettingsFilterItem>
+			<ViewSettingsFilterItem
+				text="Total de items"
+				key="totalItems"
+				multiSelect="false"
+                items="{ path: '/TotalItemView',
+								parameters: {
+                                    $apply: 'groupby((totalItems))'
+								} }">
+				<items>
+					<ViewSettingsItem id="viewFilter7" text="{totalItems}" key="totalItems"/>
+				</items>
+			</ViewSettingsFilterItem>
+		</filterItems>
+	</ViewSettingsDialog>
+</core:FragmentDefinition>
