@@ -64,17 +64,56 @@ sap.ui.define([
 
 		},
 		_onButtonPress: function(oEvent) {
+            var oModel = this.getView().getModel();
+            var oListBinding = oModel.bindList("/WO", undefined, undefined, undefined, { $$updateGroupId: "woGroup" });
+            var that = this;
+            var oGlobalBusyDialog = new sap.m.BusyDialog();
+            oGlobalBusyDialog.open();
+            sap.ui.getCore().getMessageManager().removeAllMessages();
+            oListBinding.attachCreateCompleted(function (oEvent) {
+                    oGlobalBusyDialog.close();
+                    if (oEvent.getParameter("success")) {
+                        MessageBox.show(
+                            "Dados atualizados com sucesso", {
+                            icon: MessageBox.Icon.SUCCESS,
+                            title: "Dados gravados!",
+                            onClose: function (oAction) {
+                                var oTable = that.getView().byId("woTable"),
+                                    oBinding = oTable.getBinding("items"),
+                                    aFilters = [];
+                                oBinding.sOperationMode = sap.ui.model.odata.OperationMode.Server;
+                                oBinding.filter(aFilters);
+                                that.close();
+                            }
+                        }
+                        );
+                    } else {
+                        sap.m.MessageBox.show(
+                            sap.ui.getCore().getMessageManager().getMessageModel().getData()[0].message,
+                            sap.m.MessageBox.Icon.ERROR,
+                            "Erro ao efetuar baixa"
+                        );
+                        oListBinding.resetChanges();
+                        //sap.ui.getCore().getMessageManager().removeAllMessages();
+                    }
+                }.bind(this));
+                var woValue = this.getView().byId("woValue").getValue();
+                var dateValue = this.getView().byId("woDateValue").getValue();
+                var oContext = oListBinding.create({
+                    "apptID": woValue,
+                    "dateFrom": dateValue
+                }, true);
+                this.getView().getModel().submitBatch("woGroup");
+            //	var oBindingContext = oEvent.getSource().getBindingContext();
 
-			var oBindingContext = oEvent.getSource().getBindingContext();
+		//	return new Promise(function(fnResolve) {
 
-			return new Promise(function(fnResolve) {
-
-				this.doNavigate("Page2", oBindingContext, fnResolve, "");
-			}.bind(this)).catch(function(err) {
-				if (err !== undefined) {
-					MessageBox.error(err.message);
-				}
-			});
+		//		this.doNavigate("Page2", oBindingContext, fnResolve, "");
+		//	}.bind(this)).catch(function(err) {
+		//		if (err !== undefined) {
+		//			MessageBox.error(err.message);
+		//		}
+		//	});
 
 		},
 		doNavigate: function(sRouteName, oBindingContext, fnPromiseResolve, sViaRelation) {

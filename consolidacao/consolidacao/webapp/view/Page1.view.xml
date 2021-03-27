@@ -1,5 +1,5 @@
 <mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:layout="sap.ui.layout" xmlns:form="sap.ui.layout.form" xmlns:core="sap.ui.core" controllerName="com.sap.build.standard.consolidado.controller.Page1">
-    <Page showHeader="false" title="" showFooter="true" showNavButton="false">
+    <Page showHeader="false" title="" showFooter="true" showNavButton="false" id="homePage" visible="false">
         <content>
             <Panel height="auto" width="100%" headerText="Seleção" expandable="true" expanded="true" expandAnimation="true" backgroundDesign="Solid">
                 <content>
@@ -96,7 +96,7 @@
                 </content>
             </Panel>
                     <Label id="idEPO" visible="false"/>
-                    <Table width="auto" noDataText="No data" mode="MultiSelect" showSeparators="All" growing="true" growingThreshold="20" growingScrollToLoad="true" class="sapUiResponsiveMargin" itemPress="_onTableItemPress1" items="{         path: '/TotalItemView',         parameters: {          $count: true,          $$updateGroupId : 'TotalItemViewGroup'         }        }" id="woTable">
+                    <Table width="auto" noDataText="No data" mode="MultiSelect" showSeparators="All" growing="true" growingThreshold="100" growingScrollToLoad="true" class="sapUiResponsiveMargin" itemPress="_onTableItemPress1" items="{         path: '/TotalItems',         parameters: {     $$updateGroupId : 'TotalItemViewGroup'         }        }" id="woTable">
                         <infoToolbar>
                             <Toolbar width="100%" id="vsdFilterBar" visible="false">
                                 <content>
@@ -130,13 +130,13 @@
                                 </header>
                                 <footer/>
                             </Column>
-                            <Column width="auto" id="wostatusColumn" hAlign="Left" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                            <Column width="15%" id="wostatusColumn" hAlign="Left" vAlign="Top" minScreenWidth="Phone" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
                                 <header>
                                     <Text text="WO" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
                                 </header>
                                 <footer/>
                             </Column>
-                            <Column width="auto" id="tipoWoColumn" hAlign="Left" vAlign="Top" minScreenWidth="Desktop" demandPopin="false" popinDisplay="Inline" mergeDuplicates="false">
+                            <Column width="180px" id="tipoWoColumn" hAlign="Left" vAlign="Top" minScreenWidth="Desktop" demandPopin="false" popinDisplay="Inline" mergeDuplicates="false">
                                 <header>
                                     <Text text="Tipo de WO" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
                                 </header>
@@ -154,13 +154,13 @@
                                 </header>
                                 <footer/>
                             </Column>
-                            <Column width="auto" id="atendimentoColumn" hAlign="Left" vAlign="Top" minScreenWidth="Desktop" demandPopin="false" popinDisplay="Inline" mergeDuplicates="false">
+                            <Column width="15%" id="atendimentoColumn" hAlign="Left" vAlign="Top" minScreenWidth="Desktop" demandPopin="false" popinDisplay="Inline" mergeDuplicates="false">
                                 <header>
                                     <Text text="Data de Atendimento" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
                                 </header>
                                 <footer/>
                             </Column>
-                            <Column width="auto" id="municipioColumn"  hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                            <Column width="10%" id="municipioColumn"  hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
                                 <header>
                                     <Text text="Município" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
                                 </header>
@@ -183,7 +183,7 @@
                                         ],
                                         formatter: '.formatter.slaFormat'
                                     }"/>
-                                    <core:Icon  size="32px" height="48px" width="48px" visible="true"
+                                    <core:Icon  size="32px" height="48px" width="48px" visible="true" press="_onIconPress"
                                     src="{
                                         parts: [
                                             {path: 'status'}
@@ -209,7 +209,7 @@
                         </items>
                     </Table>
                     <Table width="auto" noDataText="No data" mode="MultiSelect" showSeparators="All" growing="true" growingThreshold="20" growingScrollToLoad="true" class="sapUiResponsiveMargin" 
-                     items="{         path: 'woData>/Baixa',         parameters: {  $$updateGroupId : 'BaixaGroup'        }        }" id="baixaTable" visible="false">
+                     items="{         path: '/Baixa',         parameters: {  $$updateGroupId : 'BaixaGroup'        }        }" id="baixaTable" visible="false">
                    <columns>
                             <Column width="auto" id="consolidadoColumn" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
                                 <header>

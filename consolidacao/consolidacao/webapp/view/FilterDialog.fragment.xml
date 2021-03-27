@@ -5,10 +5,31 @@
 		confirm="handleFilterDialogConfirm">
 		<filterItems>
 			<ViewSettingsFilterItem
+				text="SLA"
+				key="sla"
+				multiSelect="false"
+                items="{ path: '/FiltroSLA' }">
+				<items>
+					<ViewSettingsItem id="viewFilter9" text="{sla}" key="sla"/>
+				</items>
+			</ViewSettingsFilterItem>
+			<ViewSettingsFilterItem
+				text="Status"
+				key="status"
+				multiSelect="false">
+				<items>
+					<ViewSettingsItem id="viewFilter8"  text="Com erro" key="status"/>
+					<ViewSettingsItem id="viewFilter10" text="Sem erro" key="status"/>
+				</items>
+			</ViewSettingsFilterItem>
+			<ViewSettingsFilterItem
 				text="WO"
 				key="workOrderID"
 				multiSelect="false"
-                items="{ path: '/TotalItemView' }">
+                items="{ path: '/TotalItems' ,
+								parameters: {
+                                    $apply: 'groupby((workOrderID))'
+								} }">
 				<items>
 					<ViewSettingsItem id="viewFilter1" text="{workOrderID}" key="workOrderID"/>
 				</items>
@@ -17,7 +38,7 @@
 				text="Tipo de WO"
 				key="tipoWo"
 				multiSelect="false"
-                items="{ path: '/TotalItemView',
+                items="{ path: '/TotalItems',
 								parameters: {
                                     $apply: 'groupby((tipoWo))'
 								} }">
@@ -29,7 +50,7 @@
 				text="Técnico"
 				key="idTecnico"
 				multiSelect="false"
-                items="{ path: '/TotalItemView',
+                items="{ path: '/TotalItems',
 								parameters: {
                                     $apply: 'groupby((idTecnico))'
 								} }">
@@ -41,7 +62,7 @@
 				text="EPO"
 				key="fornecedorSAP"
 				multiSelect="false"
-                items="{ path: '/TotalItemView',
+                items="{ path: '/TotalItems',
 								parameters: {
                                     $apply: 'groupby((fornecedorSAP))'
 								} }">
@@ -53,7 +74,7 @@
 				text="Data de Atendimento"
 				key="dataAtendimento"
 				multiSelect="false"
-                items="{ path: '/TotalItemView',
+                items="{ path: '/TotalItems',
 								parameters: {
                                     $apply: 'groupby((dataAtendimento))'
 								} }">
@@ -65,7 +86,7 @@
 				text="Município"
 				key="municipio"
 				multiSelect="false"
-                items="{ path: '/TotalItemView',
+                items="{ path: '/TotalItems',
 								parameters: {
                                     $apply: 'groupby((municipio))'
 								} }">
@@ -77,7 +98,7 @@
 				text="Total de items"
 				key="totalItems"
 				multiSelect="false"
-                items="{ path: '/TotalItemView',
+                items="{ path: '/TotalItems',
 								parameters: {
                                     $apply: 'groupby((totalItems))'
 								} }">

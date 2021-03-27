@@ -1,7 +1,8 @@
-<core:FragmentDefinition xmlns:core="sap.ui.core" controllerName="com.sap.build.standard.consolidado.controller.Dialog3" xmlns="sap.m">
+<core:FragmentDefinition xmlns:core="sap.ui.core" controllerName="com.sap.build.standard.consolidado.controller.Page1" xmlns="sap.m">
     <Dialog horizontalScrolling="false" showHeader="true" state="None" stretch="false" title="Lista de erros" type="Standard" verticalScrolling="true">
         <content>
-            <Table width="734px" noDataText="No data" mode="None" showSeparators="All" growing="true" growingThreshold="20" growingScrollToLoad="true" class="sapUiResponsiveMargin">
+            <Table width="100%" noDataText="Sem dados" mode="None" showSeparators="All" growing="true" growingThreshold="20" growingScrollToLoad="true" class="sapUiResponsiveMargin"
+            id="errosTable" items="{path: '/ErrosMaterial'}">
                 <infoToolbar>
                     <Toolbar width="100%" height="auto" design="Auto" visible="false" enabled="true">
                         <content>
@@ -11,25 +12,25 @@
                 </infoToolbar>
                 <headerToolbar/>
                 <columns>
-                    <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                    <Column width="10%" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
                         <header>
                             <Text text="Tipo" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
                         </header>
                         <footer/>
                     </Column>
-                    <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Phone" demandPopin="false" popinDisplay="Inline" mergeDuplicates="false">
+                    <Column width="10%" hAlign="Left" vAlign="Top" minScreenWidth="Phone" demandPopin="false" popinDisplay="Inline" mergeDuplicates="false">
                         <header>
                             <Text text="WO" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
                         </header>
                         <footer/>
                     </Column>
-                    <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                    <Column width="10%" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
                         <header>
                             <Text text="Material" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
                         </header>
                         <footer/>
                     </Column>
-                    <Column width="450px" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
+                    <Column width="auto" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
                         <header>
                             <Text text="Mensagem" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
                         </header>
@@ -39,18 +40,21 @@
                 <items>
                     <ColumnListItem type="Active">
                         <cells>
-                            <core:Icon src="sap-icon://error" size="32px" color="red" height="48px" width="48px" visible="true"/>
-                            <Text text="1234567" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
-                            <Text text="123545" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
-                            <Text text="XXX de quantidade do material XXX não disponível no estoque" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
-                        </cells>
-                    </ColumnListItem>
-                    <ColumnListItem type="Active">
-                        <cells>
-                            <core:Icon src="sap-icon://message-warning" size="32px" color="yellow" height="48px" width="48px" visible="true"/>
-                            <Text text="1234567" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
-                            <Text text="1000293" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
-                            <Text text="Quantidade do material XXXX excedido em 10PÇ a BOM" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                            <core:Icon src="{
+                                        parts: [
+                                            {path: 'tipo'}
+                                        ],
+                                        formatter: '.formatter.erroMatFormat'
+                                    }" 
+                                    color="{
+                                        parts: [
+                                            {path: 'tipo'}
+                                        ],
+                                        formatter: '.formatter.erroMatColor'
+                                    }" size="32px" height="48px" width="48px" visible="true"/>
+                            <Text text="{workOrderID_workOrderID}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                            <Text text="{material}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                            <Text text="{erro}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
                         </cells>
                     </ColumnListItem>
                 </items>
@@ -59,7 +63,7 @@
         <beginButton/>
         <buttons>
             <Button text="OK" type="Default" iconFirst="true" width="auto" enabled="true" visible="true" iconDensityAware="false" press="_onButtonPress"/>
-            <Button text="Download" type="Default" icon="sap-icon://download" iconFirst="true" width="auto" enabled="true" visible="true" iconDensityAware="false" press="_onButtonPress1"/>
+            <Button text="Download" type="Default" icon="sap-icon://download" iconFirst="true" width="auto" enabled="true" visible="true" iconDensityAware="false" press="onDataExportExcel"/>
         </buttons>
         <customHeader/>
         <endButton/>

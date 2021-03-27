@@ -11,16 +11,12 @@
                                     <Label text="Label" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="false"/>
                                 </form:label>
                                 <form:fields>
-                                    <Input placeholder="Cid Contrato NET SMS" type="Text" showValueHelp="false" enabled="true" visible="true" width="auto" valueHelpOnly="false" required="false" valueStateText="Invalid entry" maxLength="0"/>
+                                    <Input placeholder="Numero da WO" id="woValue" type="Text" showValueHelp="false" enabled="true" visible="true" width="auto" valueHelpOnly="false" required="false" valueStateText="Invalid entry" maxLength="0"/>
                                     <Text text="Field" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="false"/>
                                 </form:fields>
-                            </form:FormElement>
-                            <form:FormElement visible="true">
-                                <form:label>
-                                    <Label text="Label" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="false"/>
-                                </form:label>
                                 <form:fields>
-                                    <Input value="Identificador do WO" type="Text" showValueHelp="false" enabled="true" visible="true" width="auto" valueHelpOnly="false" required="false" valueStateText="Invalid entry" maxLength="0"/>
+                                    <DatePicker placeholder="Data da WO" id="woDateValue" valueFormat="yyyy-MM-dd" displayFormat="dd-MM-yyyy"/>
+                                    <Text text="Field" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="false"/>
                                 </form:fields>
                             </form:FormElement>
                         </form:formElements>
