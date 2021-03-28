@@ -204,7 +204,7 @@
                                     <Link text="{fornecedorSAP}" textAlign="Begin" width="auto" target="_blank" wrapping="false" enabled="true" visible="true" emphasized="false" subtle="false" press="_onLinkPress3"/>
                                     <Text text="{dataAtendimento}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
                                     <Text text="{municipio}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
-                                    <ObjectNumber number="{totalItems}" unit="" emphasized="true" state="None"/>
+                                    <ObjectNumber number="{totalItems}" unit="" emphasized="true" state="Success" />
                                 </cells>
                             </ColumnListItem>
                         </items>

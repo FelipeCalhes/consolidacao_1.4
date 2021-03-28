@@ -115,7 +115,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
             var oModel = new sap.ui.model.odata.v4.ODataModel({
                 groupId: "$direct",
                 synchronizationMode: "None",
-                serviceUrl: "/comsapbuildstandardconsolidado/work-order/",
+                serviceUrl: "/Consolidacaohtml5.comsapbuildstandardconsolidado/work-order/",
             });
             oView.setModel(oModel);
             var that = this;
@@ -350,7 +350,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
             var oModel = new sap.ui.model.odata.v4.ODataModel({
                 groupId: "$direct",
                 synchronizationMode: "None",
-                serviceUrl: "/comsapbuildstandardconsolidado/motor-de-regras/",
+                serviceUrl: "/Consolidacaohtml5.comsapbuildstandardconsolidado/motor-de-regras/",
             });
             this.inputId = oEvent.getSource().getId();
             // cria o value help dialog

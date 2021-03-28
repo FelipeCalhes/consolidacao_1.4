@@ -165,7 +165,7 @@
                                     }"/>
                         <ObjectIdentifier title="{material}" text="" titleActive="false" visible="true"/>
                         <Text text="{descMaterial}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
-                        <ObjectNumber number="{quantidadeBOM}" unit="UN" emphasized="true" state="None"/>
+                        <ObjectNumber number="{quantidadeBOM}" unit="UN" emphasized="true" state="Success"/>
                         <Input value="{quantidade}" type="Text" change="onChange" showValueHelp="false" enabled="true" visible="true" width="auto" valueHelpOnly="false" required="false" valueStateText="Invalid entry" maxLength="0"/>
                         <ObjectNumber number="{difQuant}" unit="UN" emphasized="true" state="Error"/>
                         </cells>

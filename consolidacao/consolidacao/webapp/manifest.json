@@ -12,12 +12,32 @@
 		"title": "{{appTitle}}",
 		"description": "{{appDescription}}",
 		"ach": "ach",
+        "crossNavigation": {
+            "inbounds": {
+                "intent1": {
+                    "signature": {
+                        "parameters": {},
+                        "additionalParameters": "allowed"
+                    },
+                    "semanticObject": "ObjConsolidado",
+                    "action": "display",
+                    "title": "{{appTitle}}",
+                    "info": " ",
+                    "subTitle": "{{subTitle}}",
+                    "icon": "sap-icon://survey"
+                }
+            }
+        },
 		"resources": "resources.json",
 		"sourceTemplate": {
 			"id": "ui5template.basicSAPUI5ApplicationProject",
 			"version": "1.32.0"
 		}
 	},
+    "sap.cloud": {
+        "public": true,
+        "service": "Consolidacaohtml5"
+    },
 	"sap.ui": {
 		"_version": "1.3.0",
 		"technology": "UI5",

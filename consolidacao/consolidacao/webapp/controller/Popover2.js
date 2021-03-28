@@ -70,7 +70,7 @@ sap.ui.define([
                 groupId: "$direct",
                 operationMode: sap.ui.model.odata.OperationMode.Server,
                 synchronizationMode: "None",
-                serviceUrl: "/comsapbuildstandardconsolidado/motor-de-regras/",
+                serviceUrl: "/Consolidacaohtml5.comsapbuildstandardconsolidado/motor-de-regras/",
             });
             var that = this;
             var oFilter = new sap.ui.model.Filter("fornecedor", sap.ui.model.FilterOperator.EQ, this.getView().byId("idEPO").getText());

@@ -342,7 +342,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
             var oModel = new sap.ui.model.odata.v4.ODataModel({
                 groupId: "$direct",
                 synchronizationMode: "None",
-                serviceUrl: "/comsapbuildstandardconsolidado/work-order/",
+                serviceUrl: "/Consolidacaohtml5.comsapbuildstandardconsolidado/work-order/",
             });
             //var oModelWo = new sap.ui.model.odata.v4.ODataModel({
             //    groupId: "$direct",
@@ -354,55 +354,35 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
             oView.getController().setHeaderContext();
             var that = this;
 
-            var oModel2 = new sap.ui.model.json.JSONModel();
-
-            /* Load the data */
-            oModel2.loadData("/comsapbuildstandardconsolidado/getuserinfo");
-            var userRoles = "";
-            /* Add a completion handler to log the json and any errors*/
-            oModel2.attachRequestCompleted(function onCompleted(oEvent) {
-                if (oEvent.getParameter("success")) {
-                    userRoles = this.getData()["xs.system.attributes"]["xs.rolecollections"];
-                    var foundValue = userRoles.filter(obj => obj === 'AdminConsolidacao');
-                    if (foundValue[0] === 'AdminConsolidacao') {
-                        userAdm = "admin";
-                    }
-                    //userName = this.getData();
-                    //    userRoles = this.getData()["xs.system.attributes"]["xs.rolecollections"];
-                    //   var foundValue = userRoles.filter(obj => obj === 'AdminConsolidacao');
-                    //    if (foundValue[0] === 'AdminConsolidacao') {
-                    //alert("Achou a role");
-                    //        userAdm = "X";
-                    //      var oTable = that.byId("woTable"),
-                    //        mParams = oEvent.getParameters(),
-                    //      oBinding = oTable.getBinding("items"),
-                    //    aFilters = [];
-                    //var oFilter = new sap.ui.model.Filter("user", sap.ui.model.FilterOperator.EQ, "admin");
-                    //aFilters.push(oFilter);
-                    //oBinding.sOperationMode = sap.ui.model.odata.OperationMode.Server;
-                    // oBinding.filter(aFilters);
-                    //that.getView().byId("homePage").setVisible(true);
-                    //   } else {
-                    var oListBinding = oModel.bindList("/LoginTecnico", undefined, undefined, undefined, { $select: "*" });
-                    //var count = 0;
-                    oListBinding.requestContexts().then(function (aContexts) {
-
-                        if (aContexts.length == 0) {
-                            if (userAdm === "admin") {
-
-                                that.onSendCnpj();
-                            } else {
-                                that.DialogCadastroCnpj.open();
-                            }
-                        } else {
-                            that.getView().byId("homePage").setVisible(true);
+            var oHashObject = new sap.ui.core.routing.HashChanger();
+            var objSemantic = oHashObject.getHash();
+            if (objSemantic == "") {
+                var oModel2 = new sap.ui.model.json.JSONModel();
+                /* Load the data */
+                oModel2.loadData("/comsapbuildstandardconsolidado/getuserinfo");
+                var userRoles = "";
+                oModel2.attachRequestCompleted(function onCompleted(oEvent) {
+                    if (oEvent.getParameter("success")) {
+                        userRoles = this.getData()["xs.system.attributes"]["xs.rolecollections"];
+                        var foundValue = userRoles.filter(obj => obj === 'AdminConsolidacao');
+                        if (foundValue[0] === 'AdminConsolidacao') {
+                            userAdm = "admin";
                         }
+                        that.onBuscaLogin(oModel);
+                    } else {
+                    }
+                });
 
-                    });
-                    // }
+            } else {
+                var objSemanticsplit = objSemantic.split("?");
+                if (objSemanticsplit[0] === 'ObjConsolidado-admin') {
+                    userAdm = "admin";
                 } else {
+                    userAdm = "";
                 }
-            });
+                that.onBuscaLogin(oModel);
+            }
+
             this.mGroupFunctions = {
                 idTecnico: function (oContext) {
                     var name = oContext.getProperty("idTecnico");
@@ -425,6 +405,25 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
                 componentName: "wo",
                 persoService: DemoPersoService
             }).activate();
+        },
+        onBuscaLogin: function (oModel) {
+            var that = this;
+            var oListBinding = oModel.bindList("/LoginTecnico", undefined, undefined, undefined, { $select: "*" });
+
+            oListBinding.requestContexts().then(function (aContexts) {
+
+                if (aContexts.length == 0) {
+                    if (userAdm === "admin") {
+
+                        that.onSendCnpj();
+                    } else {
+                        that.DialogCadastroCnpj.open();
+                    }
+                } else {
+                    that.getView().byId("homePage").setVisible(true);
+                }
+
+            });
         },
         setHeaderContext: function () {
             var oView = this.getView();
