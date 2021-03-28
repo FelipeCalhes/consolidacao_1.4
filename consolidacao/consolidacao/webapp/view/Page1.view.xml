@@ -37,7 +37,8 @@
                                                 </form:label>
                                                 <form:fields>
                                                   <!--  <Input type="Text" id="atendimentoFilter" showValueHelp="false" enabled="true" visible="true" width="auto" valueHelpOnly="false" required="false" valueStateText="Invalid entry" maxLength="0"/> -->
-                                                  <DatePicker id="atendimentoFilter" valueFormat="yyyy-MM-dd" displayFormat="dd-MM-yyyy"/>
+                                                 <!-- <DatePicker id="atendimentoFilter" valueFormat="yyyy-MM-dd" displayFormat="dd-MM-yyyy"/> -->
+                                                  <DateRangeSelection id="atendimentoFilter" displayFormat="dd-MM-yyyy"/>
                                                 </form:fields>
                                             </form:FormElement>
                                         </form:formElements>

@@ -7,7 +7,7 @@
 			<ViewSettingsFilterItem
 				text="SLA"
 				key="sla"
-				multiSelect="false"
+				multiSelect="true"
                 items="{ path: '/FiltroSLA' }">
 				<items>
 					<ViewSettingsItem id="viewFilter9" text="{sla}" key="sla"/>
@@ -16,16 +16,17 @@
 			<ViewSettingsFilterItem
 				text="Status"
 				key="status"
-				multiSelect="false">
+				multiSelect="true">
 				<items>
-					<ViewSettingsItem id="viewFilter8"  text="Com erro" key="status"/>
-					<ViewSettingsItem id="viewFilter10" text="Sem erro" key="status"/>
+					<ViewSettingsItem id="viewFilter8"  text="Erro" key="status"/>
+					<ViewSettingsItem id="viewFilter10" text="Warning" key="status"/>
+					<ViewSettingsItem id="viewFilter11" text="Sucesso" key="status"/>
 				</items>
 			</ViewSettingsFilterItem>
 			<ViewSettingsFilterItem
 				text="WO"
 				key="workOrderID"
-				multiSelect="false"
+				multiSelect="true"
                 items="{ path: '/TotalItems' ,
 								parameters: {
                                     $apply: 'groupby((workOrderID))'
@@ -49,7 +50,7 @@
 			<ViewSettingsFilterItem
 				text="Técnico"
 				key="idTecnico"
-				multiSelect="false"
+				multiSelect="true"
                 items="{ path: '/TotalItems',
 								parameters: {
                                     $apply: 'groupby((idTecnico))'
@@ -61,7 +62,7 @@
 			<ViewSettingsFilterItem
 				text="EPO"
 				key="fornecedorSAP"
-				multiSelect="false"
+				multiSelect="true"
                 items="{ path: '/TotalItems',
 								parameters: {
                                     $apply: 'groupby((fornecedorSAP))'
@@ -73,7 +74,7 @@
 			<ViewSettingsFilterItem
 				text="Data de Atendimento"
 				key="dataAtendimento"
-				multiSelect="false"
+				multiSelect="true"
                 items="{ path: '/TotalItems',
 								parameters: {
                                     $apply: 'groupby((dataAtendimento))'
@@ -85,7 +86,7 @@
 			<ViewSettingsFilterItem
 				text="Município"
 				key="municipio"
-				multiSelect="false"
+				multiSelect="true"
                 items="{ path: '/TotalItems',
 								parameters: {
                                     $apply: 'groupby((municipio))'
@@ -97,7 +98,7 @@
 			<ViewSettingsFilterItem
 				text="Total de items"
 				key="totalItems"
-				multiSelect="false"
+				multiSelect="true"
                 items="{ path: '/TotalItems',
 								parameters: {
                                     $apply: 'groupby((totalItems))'

@@ -515,10 +515,12 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
                     var newDate = isoDate[0];
                     var oFilter = new sap.ui.model.Filter(oItem.getKey(), sap.ui.model.FilterOperator.EQ, newDate);
                 } else if (oItem.getKey() == "status") {
-                    if (oItem.getText() == "Com erro") {
-                        var oFilter = new sap.ui.model.Filter("status", sap.ui.model.FilterOperator.EQ, "true");
-                    } else {
-                        var oFilter = new sap.ui.model.Filter("status", sap.ui.model.FilterOperator.EQ, "false");
+                    if (oItem.getText() == "Erro") {
+                        var oFilter = new sap.ui.model.Filter("status", sap.ui.model.FilterOperator.EQ, "3");
+                    } else if (oItem.getText() == "Warning") {
+                        var oFilter = new sap.ui.model.Filter("status", sap.ui.model.FilterOperator.EQ, "2");
+                    }else{
+                        var oFilter = new sap.ui.model.Filter("status", sap.ui.model.FilterOperator.EQ, "1");
                     }
                 } else {
                     var oFilter = new sap.ui.model.Filter(oItem.getKey(), sap.ui.model.FilterOperator.EQ, oItem.getText());
@@ -599,7 +601,12 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
                 aFilters.push(oFilter);
             }
             if (valueAtendimento !== "") {
-                oFilter = new sap.ui.model.Filter("dataAtendimento", sap.ui.model.FilterOperator.EQ, valueAtendimento);
+                var datesplit = valueAtendimento.split(" - ");
+                var datetosplit = datesplit[0].split("-");
+                var dateto = datetosplit[2] + "-" + datetosplit[1] + "-" +  datetosplit[0];
+                var datefromsplit = datesplit[1].split("-");
+                var datefrom = datefromsplit[2] + "-" + datefromsplit[1] + "-" +  datefromsplit[0];
+                oFilter = new sap.ui.model.Filter("dataAtendimento", sap.ui.model.FilterOperator.BT, dateto, datefrom);
                 aFilters.push(oFilter);
             }
             if (valueMunicipio !== "") {
