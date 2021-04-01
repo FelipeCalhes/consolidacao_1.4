@@ -7,10 +7,14 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
     'sap/m/TablePersoController',
     './DemoPersoService',
     'sap/ui/model/Sorter',
-    "../model/formatter"
-], function (BaseController, MessageBox, Dialog1, Utilities, History, Filter, TablePersoController, DemoPersoService, Sorter, formatter) {
+    "../model/formatter",
+    'sap/ui/core/util/Export',
+    'sap/ui/core/util/ExportTypeCSV',
+    'sap/ui/export/library',
+    'sap/ui/export/Spreadsheet'
+], function (BaseController, MessageBox, Dialog1, Utilities, History, Filter, TablePersoController, DemoPersoService, Sorter, formatter, Export, ExportTypeCSV, exportLibrary, Spreadsheet) {
     "use strict";
-
+    var EdmType = exportLibrary.EdmType;
     return BaseController.extend("com.sap.build.standard.consolidado.controller.Page2", {
         formatter: formatter,
         handleRouteMatched: function (oEvent) {
@@ -155,7 +159,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
                     };
                 }.bind(this)
             });
-            
+
             this._oTPC = new TablePersoController({
                 table: this.byId("materialTable"),
                 //specify the first part of persistence ids e.g. 'demoApp-productsTable-dimensionsCol'
@@ -308,7 +312,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
         },
         resetGroupDialog: function (oEvent) {
             this.groupReset = true;
-        },        
+        },
         onSave: function () {
             var that = this;
             var fnSuccess = function () {
@@ -318,7 +322,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
                     sap.m.MessageBox.Icon.SUCCESS,
                     "Dados gravados!"
                 );
-          //      that.getView().getController().setHeaderContext();
+                //      that.getView().getController().setHeaderContext();
             }.bind(this);
 
             var fnError = function (oError) {
@@ -334,18 +338,18 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
             this.getView().getModel().submitBatch("MaterialGroup").then(fnSuccess, fnError);
             //this._bTechnicalErrors = false; // If there were technical errors, a new save resets them.
         },
-        onChange: function(oEvent){
-        var quantidade = oEvent.getSource().getParent().getBindingContext().getProperty("quantidade");
-        var quantiadeBom = oEvent.getSource().getParent().getBindingContext().getProperty("quantidadeBOM");
-        var diferencaNew = quantiadeBom - quantidade;
-        if(diferencaNew < 0){
-            diferencaNew = 0;
-        }
-         oEvent.getSource().getParent().getBindingContext().setProperty("difQuant", diferencaNew.toString());
+        onChange: function (oEvent) {
+            var quantidade = oEvent.getSource().getParent().getBindingContext().getProperty("quantidade");
+            var quantiadeBom = oEvent.getSource().getParent().getBindingContext().getProperty("quantidadeBOM");
+            var diferencaNew = quantiadeBom - quantidade;
+            if (diferencaNew < 0) {
+                diferencaNew = 0;
+            }
+            oEvent.getSource().getParent().getBindingContext().setProperty("difQuant", diferencaNew.toString());
         },
-		onResetChanges : function () {
-			this.byId("materialTable").getBinding("items").resetChanges();
-        }, 
+        onResetChanges: function () {
+            this.byId("materialTable").getBinding("items").resetChanges();
+        },
         handleValueHelpMat: function (oEvent) {
             var oModel = new sap.ui.model.odata.v4.ODataModel({
                 groupId: "$direct",
@@ -362,9 +366,14 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
                 );
                 //to get access to the global model
                 this.getView().addDependent(this.DialogMateriais);
+                sap.ui.core.Fragment.byId("DialogMateriais", "List").setModel(oModel);
+            } else {
+                var aFilters = []
+                var oBind = sap.ui.core.Fragment.byId("DialogMateriais", "List").getBinding("items");
+                oBind.sOperationMode = sap.ui.model.odata.OperationMode.Server;
+                oBind.filter(aFilters, sap.ui.model.FilterType.Application);
             }
             //var oJsonModel = new sap.ui.model.json.JSONModel();
-            sap.ui.core.Fragment.byId("DialogMateriais", "List").setModel(oModel);
             // abre o value help dialog filtrando pelo input value
             this.DialogMateriais.open();
             //	oGlobalBusyDialog.open();
@@ -373,39 +382,61 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
             var oSelectedItem = evt.getParameter("selectedItem");
             var that = this;
             if (oSelectedItem) {
+                var materialExists = false;
                 //var arrayId = that.inputId.split("TpOS");
                 // var idTpOs = arrayId[0] + "TpOS";
-               // that.getView().byId(that.inputId).setValue(oSelectedItem.getDescription());
+                // that.getView().byId(that.inputId).setValue(oSelectedItem.getDescription());
                 //that.getView().byId("CodMatSAP").setValue(oSelectedItem.getTitle());
                 var that = this;
                 var oList = this.getView().byId("materialTable"),
-                oBinding = oList.getBinding("items"),
-                oContext = oBinding.create({
-                    "material": oSelectedItem.getTitle(),
-                    "descMaterial": oSelectedItem.getDescription(),
-                    "workOrderID_workOrderID": that.byId("workOrderID").getText()
+                    oBinding = oList.getBinding("items");
+                $.each(oList.getItems(), function (index, value) {
+                    var material = oList.getItems()[index].getCells()[1].getTitle();
+                    if (material == oSelectedItem.getTitle()) {
+                        materialExists = true;
+                    }
                 });
+                if (materialExists == false) {
+                    var oContext = oBinding.create({
+                        "material": oSelectedItem.getTitle(),
+                        "descMaterial": oSelectedItem.getDescription(),
+                        "workOrderID_workOrderID": that.byId("workOrderID").getText()
+                    });
 
-            //this._setUIChanges();
-            //this.getView().getModel("appView").setProperty("/usernameEmpty", true);
+                    //this._setUIChanges();
+                    //this.getView().getModel("appView").setProperty("/usernameEmpty", true);
 
-            oList.getItems().some(function (oItem) {
-                if (oItem.getBindingContext() === oContext) {
-                    oItem.focus();
-                    oItem.setSelected(true);
-                //    that.getView().getController().onSave();
-                    return true;
+                    oList.getItems().some(function (oItem) {
+                        if (oItem.getBindingContext() === oContext) {
+                            oItem.focus();
+                            oItem.setSelected(true);
+                            //    that.getView().getController().onSave();
+                            return true;
+                        }
+                    });
+                } else {
+                    sap.m.MessageBox.show(
+                        "Material já existente na WO",
+                        sap.m.MessageBox.Icon.ERROR,
+                        "Erro ao adicionar o material."
+                    );
                 }
-            });
             }
             //evt.getSource().getBinding("items").filter([]);
         },
         _handleValueHelpSearchMateriais: function (evt) {
             var sValue = evt.getParameter("value").toUpperCase();
-            var FilterdescMaterial = new sap.ui.model.Filter("descMaterial", sap.ui.model.FilterOperator.Contains, sValue);
+            var filter = new sap.ui.model.Filter({
+                filters: [
+                    new sap.ui.model.Filter("descMaterial", sap.ui.model.FilterOperator.Contains, sValue),
+                    new sap.ui.model.Filter("material", sap.ui.model.FilterOperator.Contains, sValue)
+                ],
+                and: false
+            })
+            //var FilterdescMaterial = new sap.ui.model.Filter("descMaterial", sap.ui.model.FilterOperator.Contains, sValue);
             var oBind = sap.ui.core.Fragment.byId("DialogMateriais", "List").getBinding("items");
             oBind.sOperationMode = sap.ui.model.odata.OperationMode.Server;
-            oBind.filter(FilterdescMaterial, sap.ui.model.FilterType.Application);
+            oBind.filter(filter, sap.ui.model.FilterType.Application);
             //evt.getSource().getBinding("items").filter([FilterdescricaoOs]);
         },
         onDelete: function (oEvent) {
@@ -413,24 +444,109 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
             var oList = oEvent.getSource(),
                 oItem = oEvent.getParameter("listItem");
             var that = this;
-            if (oItem) {
-                oItem.getBindingContext().delete("$auto").then(function () {
-                    //   window.alert("deu certo");
-                    sap.m.MessageBox.show(
-                        "Registro excluido com sucesso!",
-                        sap.m.MessageBox.Icon.SUCCESS,
-                        "Dados gravados!"
-                    );
-                    that.getView().getController().setHeaderContext();
-                }.bind(this), function (oError) {
-                    //  window.alert("deu erro");
-                    sap.m.MessageBox.show(
-                        "Tente novamente.",
-                        sap.m.MessageBox.Icon.ERROR,
-                        "Erro ao deletar o registro."
-                    );
-                });
-            }
+
+            MessageBox.warning("Tem certeza que deseja excluir o registro? Essa ação não poderá ser desfeita.", {
+                actions: [MessageBox.Action.OK, MessageBox.Action.CANCEL],
+                emphasizedAction: MessageBox.Action.OK,
+                onClose: function (sAction) {
+                    if (sAction == "OK") {
+                        if (oItem) {
+                            oItem.getBindingContext().delete("$auto").then(function () {
+                                //   window.alert("deu certo");
+                                sap.m.MessageBox.show(
+                                    "Registro excluido com sucesso!",
+                                    sap.m.MessageBox.Icon.SUCCESS,
+                                    "Dados gravados!"
+                                );
+                                that.getView().getController().setHeaderContext();
+                            }.bind(this), function (oError) {
+                                //  window.alert("deu erro");
+                                sap.m.MessageBox.show(
+                                    "Tente novamente.",
+                                    sap.m.MessageBox.Icon.ERROR,
+                                    "Erro ao deletar o registro."
+                                );
+                            });
+                        }
+                    }
+                }
+            })
         },
+        createColumnConfig: function () {
+            var aCols = [];
+
+            aCols.push({
+                // label: 'Tipo de Inst.',
+                property: 'erro',
+                type: EdmType.String
+            });
+
+            aCols.push({
+                //  label: 'ID Tipo de OS',
+                property: 'material',
+                type: EdmType.String
+            });
+
+            aCols.push({
+                property: 'descMaterial',
+                type: EdmType.String
+            });
+
+            aCols.push({
+                // label: 'Cód.Mat. SAP',
+                property: 'quantidadeBOM',
+                type: EdmType.String
+            });
+
+            aCols.push({
+                // label: 'Cód.Mat. SAP',
+                property: 'quantidade',
+                type: EdmType.String
+            });
+
+            aCols.push({
+                // label: 'Cód.Mat. SAP',
+                property: 'difQuant',
+                type: EdmType.String
+            });
+
+            return aCols;
+        },
+        onExport: function () {
+            var aCols, oRowBinding, oSettings, oSheet, oTable;
+
+            if (!this._oTable) {
+                this._oTable = this.byId('materialTable');
+            }
+
+            oTable = this._oTable;
+            oRowBinding = oTable.getBinding('items');
+
+            aCols = this.createColumnConfig();
+
+            var oModel = oRowBinding.getModel();
+            var fileName = "Materiais da WO " + this.byId("workOrderID").getText() + ".xlsx"
+            oSettings = {
+                workbook: {
+                    columns: aCols,
+                    hierarchyLevel: 'Level'
+                },
+                dataSource: {
+                    type: 'odata',
+                    dataUrl: oRowBinding.getDownloadUrl ? oRowBinding.getDownloadUrl() : null,
+                    serviceUrl: this._sServiceUrl,
+                    headers: oModel.getHttpHeaders ? oModel.getHttpHeaders() : null,
+                    count: oRowBinding.getLength ? oRowBinding.getLength() : null,
+                    useBatch: true // Default for ODataModel V2
+                },
+                fileName: fileName,
+                worker: false // We need to disable worker because we are using a MockServer as OData Service
+            };
+
+            oSheet = new Spreadsheet(oSettings);
+            oSheet.build().finally(function () {
+                oSheet.destroy();
+            });
+        }
     });
 }, /* bExport= */ true);

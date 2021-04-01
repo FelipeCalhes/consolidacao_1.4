@@ -894,6 +894,103 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
             oSheet.build().finally(function () {
                 oSheet.destroy();
             });
+        },
+        createColumnConfigTotalItems: function () {
+            var aCols = [];
+
+            aCols.push({
+                // label: 'Tipo de Inst.',
+                property: 'sla',
+                type: EdmType.String
+            });
+
+            aCols.push({
+                //  label: 'ID Tipo de OS',
+                property: 'status',
+                type: EdmType.String
+            });
+
+            aCols.push({
+                property: 'workOrderID',
+                type: EdmType.String
+            });
+
+            aCols.push({
+                // label: 'Cód.Mat. SAP',
+                property: 'tipoWo',
+                type: EdmType.String
+            });
+
+            aCols.push({
+                // label: 'Cód.Mat. SAP',
+                property: 'idTecnico',
+                type: EdmType.String
+            });
+
+            aCols.push({
+                // label: 'Cód.Mat. SAP',
+                property: 'fornecedorSAP',
+                type: EdmType.String
+            });
+
+            aCols.push({
+                // label: 'Cód.Mat. SAP',
+                property: 'dataAtendimento',
+                type: EdmType.String
+            });
+
+            aCols.push({
+                // label: 'Cód.Mat. SAP',
+                property: 'municipio',
+                type: EdmType.String
+            });
+
+            aCols.push({
+                // label: 'Cód.Mat. SAP',
+                property: 'totalItems',
+                type: EdmType.String
+            });
+
+            return aCols;
+        },
+        onExport: function () {
+            var aCols, oRowBinding, oSettings, oSheet, oTable;
+
+            if (!this._oTable) {
+                this._oTable = this.byId('woTable');
+            }
+
+            oTable = this._oTable;
+            oRowBinding = oTable.getBinding('items');
+
+            aCols = this.createColumnConfigTotalItems();
+
+            var oModel = oRowBinding.getModel();
+
+            oSettings = {
+                workbook: {
+                    columns: aCols,
+                    hierarchyLevel: 'Level'
+                },
+                dataSource: {
+                    type: 'odata',
+                    dataUrl: oRowBinding.getDownloadUrl ? oRowBinding.getDownloadUrl() : null,
+                    serviceUrl: this._sServiceUrl,
+                    headers: oModel.getHttpHeaders ? oModel.getHttpHeaders() : null,
+                    count: oRowBinding.getLength ? oRowBinding.getLength() : null,
+                    useBatch: true // Default for ODataModel V2
+                },
+                fileName: 'Cabeçalho da WO.xlsx',
+                worker: false // We need to disable worker because we are using a MockServer as OData Service
+            };
+
+            oSheet = new Spreadsheet(oSettings);
+            oSheet.build().finally(function () {
+                oSheet.destroy();
+            });
+        },
+        onClearSelections: function(){
+            this.getView().byId("woTable").removeSelections(true);
         }
     });
 }, /* bExport= */ true);
