@@ -399,11 +399,19 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
                     };
                 }
             };
+            
+            this._oTPC = null;
+            var oPersonalizationService = sap.ushell.Container.getService("Personalization");
+            var oPersonalizer = oPersonalizationService.getPersonalizer({
+                container: "Consolidacaohtml5.comsapbuildstandardconsolidado", // This key must be globally unique (use a key to
+                  // identify the app) Note that only 40 characters are allowed
+                 item: "woItemTable" // Maximum of 40 characters applies to this key as well
+            });
             this._oTPC = new TablePersoController({
                 table: this.byId("woTable"),
                 //specify the first part of persistence ids e.g. 'demoApp-productsTable-dimensionsCol'
-                componentName: "wo",
-                persoService: DemoPersoService
+                componentName: "table",
+                persoService: oPersonalizer
             }).activate();
         },
         onBuscaLogin: function (oModel) {

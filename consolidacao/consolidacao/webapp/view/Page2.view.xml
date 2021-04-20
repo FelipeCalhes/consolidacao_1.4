@@ -57,7 +57,7 @@
                                             </form:FormElement>
                                             <form:FormElement visible="true">
                                                 <form:label>
-                                                    <Label text="Empreiteira" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                                    <Label text="Fornecedor" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
                                                 </form:label>
                                                 <form:fields>
                                                     <Text text="" width="auto" id="fornecedorSAP" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>

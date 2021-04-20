@@ -6,7 +6,7 @@
 		reset=".resetGroupDialog">
 		<groupItems>
 			<ViewSettingsItem text="Técnico" key="idTecnico" />
-			<ViewSettingsItem text="EPO" key="fornecedorSAP" />
+			<ViewSettingsItem text="Fornecedor" key="fornecedorSAP" />
 		</groupItems>
 	</ViewSettingsDialog>
 </core:FragmentDefinition>

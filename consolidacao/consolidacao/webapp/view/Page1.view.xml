@@ -97,7 +97,13 @@
                 </content>
             </Panel>
                     <Label id="idEPO" visible="false"/>
-                    <Table width="auto" noDataText="No data" mode="MultiSelect" showSeparators="All" growing="true" growingThreshold="100" growingScrollToLoad="true" class="sapUiResponsiveMargin" itemPress="_onTableItemPress1" items="{         path: '/TotalItems',         parameters: {     $$updateGroupId : 'TotalItemViewGroup'         }        }" id="woTable">
+                    <Table width="auto" noDataText="No data" mode="MultiSelect" showSeparators="All" growing="true" growingThreshold="100" growingScrollToLoad="true" class="sapUiResponsiveMargin" itemPress="_onTableItemPress1" 
+                    items="{ path: '/TotalItems',
+                                parameters: {   
+                                  $count: true,
+                                  $$updateGroupId : 'TotalItemViewGroup'
+                                } 
+                            }" id="woTable">
                         <infoToolbar>
                             <Toolbar width="100%" id="vsdFilterBar" visible="false">
                                 <content>
@@ -153,7 +159,7 @@
                             </Column>
                             <Column width="auto" id="epoColumn" hAlign="Left" vAlign="Top" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" mergeDuplicates="false">
                                 <header>
-                                    <Text text="EPO" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                    <Text text="Fornecedor" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
                                 </header>
                                 <footer/>
                             </Column>

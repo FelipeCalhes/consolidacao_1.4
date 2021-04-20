@@ -60,7 +60,7 @@
 				</items>
 			</ViewSettingsFilterItem>
 			<ViewSettingsFilterItem
-				text="EPO"
+				text="Fornecedor"
 				key="fornecedorSAP"
 				multiSelect="true"
                 items="{ path: '/TotalItems',

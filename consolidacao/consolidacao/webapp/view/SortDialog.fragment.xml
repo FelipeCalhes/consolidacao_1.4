@@ -7,7 +7,7 @@
 			<ViewSettingsItem text="WO" key="workOrderID" selected="true" />
 			<ViewSettingsItem text="Tipo de WO" key="tipoWo" />
 			<ViewSettingsItem text="Técnico" key="idTecnico" />
-			<ViewSettingsItem text="EPO" key="fornecedorSAP" />
+			<ViewSettingsItem text="Fornecedor" key="fornecedorSAP" />
 			<ViewSettingsItem text="Data de Atendimento" key="dataAtendimento" />
 			<ViewSettingsItem text="Município" key="municipio" />
 			<ViewSettingsItem text="Total de ítems" key="totalItems" />
