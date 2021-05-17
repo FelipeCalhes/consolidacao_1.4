@@ -84,6 +84,18 @@
 				</items>
 			</ViewSettingsFilterItem>
 			<ViewSettingsFilterItem
+				text="Contrato"
+				key="contrato"
+				multiSelect="true"
+                items="{ path: '/TotalItems',
+								parameters: {
+                                    $apply: 'groupby((contrato))'
+								} }">
+				<items>
+					<ViewSettingsItem id="viewFilter60" text="{contrato}" key="contrato"/>
+				</items>
+			</ViewSettingsFilterItem>
+			<ViewSettingsFilterItem
 				text="Município"
 				key="municipio"
 				multiSelect="true"

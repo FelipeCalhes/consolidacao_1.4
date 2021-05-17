@@ -315,28 +315,47 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
         },
         onSave: function () {
             var that = this;
-            var fnSuccess = function () {
-
+            var quantidadeEmBraco = false;
+            var oList = this.getView().byId("materialTable"),
+                oBinding = oList.getBinding("items");
+            $.each(oList.getItems(), function (index, value) {
+                var quantidade = oList.getItems()[index].getCells()[4].getValue();
+                if (quantidade == "" || quantidade == 0) {
+                    quantidadeEmBraco = true;
+                }
+            });
+            if (quantidadeEmBraco) {
                 sap.m.MessageBox.show(
-                    "Dados atualizados com sucesso",
-                    sap.m.MessageBox.Icon.SUCCESS,
-                    "Dados gravados!"
-                );
-                //      that.getView().getController().setHeaderContext();
-            }.bind(this);
-
-            var fnError = function (oError) {
-
-                sap.m.MessageBox.show(
-                    "Tente novamente.",
+                    "Um ou mais materiais estão com a quantidade vazia, favor verifique e tente novamente.",
                     sap.m.MessageBox.Icon.ERROR,
-                    "Erro ao atualizar os dados"
+                    "Erro ao gravar os dados"
                 );
-            }.bind(this);
 
-            //this._setBusy(true); // Lock UI until submitBatch is resolved.
-            this.getView().getModel().submitBatch("MaterialGroup").then(fnSuccess, fnError);
-            //this._bTechnicalErrors = false; // If there were technical errors, a new save resets them.
+            } else {
+                var fnSuccess = function () {
+
+                    sap.m.MessageBox.show(
+                        "Dados atualizados com sucesso",
+                        sap.m.MessageBox.Icon.SUCCESS,
+                        "Dados gravados!"
+                    );
+                    //      that.getView().getController().setHeaderContext();
+                }.bind(this);
+
+                var fnError = function (oError) {
+
+                    sap.m.MessageBox.show(
+                        "Tente novamente.",
+                        sap.m.MessageBox.Icon.ERROR,
+                        "Erro ao atualizar os dados"
+                    );
+                }.bind(this);
+
+                //this._setBusy(true); // Lock UI until submitBatch is resolved.
+                this.getView().getModel().submitBatch("MaterialGroup").then(fnSuccess, fnError);
+                //this._bTechnicalErrors = false; // If there were technical errors, a new save resets them.
+
+            }
         },
         onChange: function (oEvent) {
             var quantidade = oEvent.getSource().getParent().getBindingContext().getProperty("quantidade");

@@ -9,6 +9,7 @@
 			<ViewSettingsItem text="Técnico" key="idTecnico" />
 			<ViewSettingsItem text="Fornecedor" key="fornecedorSAP" />
 			<ViewSettingsItem text="Data de Atendimento" key="dataAtendimento" />
+			<ViewSettingsItem text="Contrato" key="contrato" />
 			<ViewSettingsItem text="Município" key="municipio" />
 			<ViewSettingsItem text="Total de ítems" key="totalItems" />
 		</sortItems>

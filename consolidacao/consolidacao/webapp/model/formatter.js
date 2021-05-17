@@ -9,7 +9,7 @@ sap.ui.define(function() {
 				} else if (fsla < 2) {
 					return "Warning";
 				} else {
-					return "None";
+					return "Information";
 				}		
 		},
 

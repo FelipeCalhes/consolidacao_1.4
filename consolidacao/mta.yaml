@@ -1,6 +1,6 @@
 _schema-version: "3.2"
 ID: consolidacao
-version: 0.0.1
+version: 0.0.2
 modules:
 - name: consolidacao-approuter
   type: approuter.nodejs

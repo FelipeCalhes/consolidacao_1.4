@@ -518,7 +518,19 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
                 //		sValue1 = aSplit[2],
                 //		sValue2 = aSplit[3],
                 if (oItem.getKey() == "dataAtendimento") {
-                    var isoDate = new Date(oItem.getText()).toISOString().split("T");
+                    var date = oItem.getText().replace(' de', '');
+                    date = date.replace(' de', '');
+                    date = date.replace('fev', 'feb');
+                    date = date.replace('abr', 'apr');
+                    date = date.replace('mai', 'may');
+                    date = date.replace('ago', 'aug');
+                    date = date.replace('set', 'sep');
+                    date = date.replace('out', 'oct');
+                    date = date.replace('dez', 'dec');
+
+                    date = date.replace('ene', 'jan');
+                    date = date.replace('dic', 'dec');
+                    var isoDate = new Date(date).toISOString().split("T");
                     var newDate = isoDate[0];
                     var oFilter = new sap.ui.model.Filter(oItem.getKey(), sap.ui.model.FilterOperator.EQ, newDate);
                 } else if (oItem.getKey() == "status") {
@@ -944,6 +956,12 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
             aCols.push({
                 // label: 'Cód.Mat. SAP',
                 property: 'dataAtendimento',
+                type: EdmType.String
+            });
+
+            aCols.push({
+                // label: 'Cód.Mat. SAP',
+                property: 'contrato',
                 type: EdmType.String
             });
 
