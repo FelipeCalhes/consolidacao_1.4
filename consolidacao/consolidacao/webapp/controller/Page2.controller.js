@@ -1,4 +1,4 @@
-sap.ui.define(["sap/ui/core/mvc/Controller",
+    sap.ui.define(["sap/ui/core/mvc/Controller",
     "sap/m/MessageBox",
     "./Dialog1",
     "./utilities",
@@ -143,6 +143,11 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
                     this.byId("idTecnico").setText(oContainer.idTecnico);
                     this.byId("fornecedorSAP").setText(oContainer.fornecedorSAP);
                     this.byId("dataAtendimento").setText(oContainer.dataAtendimento);
+                    if(oContainer.statusFinalizacao == 'pendente'){
+                        this.byId("addBtn").setVisible(false);
+                    }else{
+                        this.byId("addBtn").setVisible(true);
+                    }
                     var oFilter = new sap.ui.model.Filter("workOrderID_workOrderID", sap.ui.model.FilterOperator.EQ, oContainer.workOrderID);
                     aFilters.push(oFilter);
                     oBinding.sOperationMode = sap.ui.model.odata.OperationMode.Server;
@@ -241,6 +246,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
                 );
                 //to get access to the global model
                 this.getView().addDependent(this.DialogFilter2);
+                this.DialogFilter2.getModel().setSizeLimit(999999999999);
             }
             // abre o value help dialog filtrando pelo input value
             this.DialogFilter2.open();
@@ -419,7 +425,8 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
                     var oContext = oBinding.create({
                         "material": oSelectedItem.getTitle(),
                         "descMaterial": oSelectedItem.getDescription(),
-                        "workOrderID_workOrderID": that.byId("workOrderID").getText()
+                        "workOrderID_workOrderID": that.byId("workOrderID").getText(),
+                        "bloqueado": false
                     });
 
                     //this._setUIChanges();
@@ -566,6 +573,9 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
             oSheet.build().finally(function () {
                 oSheet.destroy();
             });
+        },
+         onExit: function(){
+            this._oTPC.destroy();
         }
     });
 }, /* bExport= */ true);

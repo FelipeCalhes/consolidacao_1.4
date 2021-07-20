@@ -27,10 +27,10 @@
 				text="WO"
 				key="workOrderID"
 				multiSelect="true"
-                items="{ path: '/TotalItems' ,
+                items="{ path: '/TotalItems',
 								parameters: {
                                     $apply: 'groupby((workOrderID))'
-								} }">
+								}  }">
 				<items>
 					<ViewSettingsItem id="viewFilter1" text="{workOrderID}" key="workOrderID"/>
 				</items>

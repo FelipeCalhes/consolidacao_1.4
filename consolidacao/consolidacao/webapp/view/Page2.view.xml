@@ -105,7 +105,7 @@
                                             <OverflowToolbarButton text="Filter" type="Transparent" icon="sap-icon://filter" iconFirst="true" width="auto" enabled="true" visible="true" iconDensityAware="false" press="handleFilterButtonPressed"/>
                                             <OverflowToolbarButton text="Group" type="Transparent" icon="sap-icon://group-2" iconFirst="true" width="auto" enabled="true" visible="true" iconDensityAware="false"  press="handleGroupButtonPressed"/>
                                             <OverflowToolbarButton text="Settings" type="Transparent" icon="sap-icon://action-settings" iconFirst="true" width="auto" enabled="true" visible="true" iconDensityAware="false" press="onPersoButtonPressed"/>
-                                            <Button text="" type="Default" icon="sap-icon://add" iconFirst="true" width="auto" enabled="true" visible="true" iconDensityAware="false" press="handleValueHelpMat"/>
+                                            <Button text="" type="Default" icon="sap-icon://add" iconFirst="true" width="auto" enabled="true" visible="true" iconDensityAware="false" press="handleValueHelpMat" id="addBtn"/>
                                             <OverflowToolbarButton text="Action" type="Default" icon="sap-icon://download" iconFirst="true" width="auto" enabled="true" visible="true" iconDensityAware="false" press="onExport"/>
                                         </content>
                                     </OverflowToolbar>
@@ -165,9 +165,9 @@
                                         formatter: '.formatter.erroFormartColor'
                                     }"/>
                         <ObjectIdentifier title="{material}" text="" titleActive="false" visible="true"/>
-                        <Text text="{descMaterial}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                        <Text text="{descMaterial}" width="auto"  wrapping="true" textAlign="Begin" textDirection="Inherit" visible="true"/>
                         <ObjectNumber number="{quantidadeBOM}" unit="{unidade}" emphasized="true" state="Success"/>
-                        <Input value="{quantidade}" type="Text" change="onChange" showValueHelp="false" enabled="true" visible="true" width="auto" valueHelpOnly="false" required="false" valueStateText="Invalid entry" maxLength="0"/>
+                        <Input value="{quantidade}" type="Text" change="onChange" showValueHelp="false" enabled="{= %{bloqueado} === false }" visible="true" width="auto" valueHelpOnly="false" required="false" valueStateText="Invalid entry" maxLength="0"/>
                         <ObjectNumber number="{difQuant}" unit="{unidade}" emphasized="true" state="Error"/>
                         </cells>
                     </ColumnListItem>

@@ -496,6 +496,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
                 );
                 //to get access to the global model
                 this.getView().addDependent(this.DialogFilter);
+                this.DialogFilter.getModel().setSizeLimit(999999999999);
             }
             // abre o value help dialog filtrando pelo input value
             this.DialogFilter.open();
@@ -1017,6 +1018,9 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
         },
         onClearSelections: function(){
             this.getView().byId("woTable").removeSelections(true);
+        },
+         onExit: function(){
+            this._oTPC.destroy();
         }
     });
 }, /* bExport= */ true);
