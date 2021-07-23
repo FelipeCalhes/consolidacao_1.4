@@ -212,13 +212,13 @@
                                         formatter: '.formatter.statusFormartColor'
                                     }"
                                     />
-                                    <Text text="{workOrderID}" textAlign="Begin" width="auto"  wrapping="false"  visible="true"/>
-                                    <Text text="{tipoWo}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
-                                    <Text text="{idTecnico}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                    <Text text="{workOrderID}" textAlign="Begin" width="auto"  wrapping="true"  visible="true"/>
+                                    <Text text="{tipoWo}" width="auto"  wrapping="true" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                    <Text text="{idTecnico}" width="auto" wrapping="true" textAlign="Begin" textDirection="Inherit" visible="true"/>
                                     <Link text="{fornecedorSAP}" textAlign="Begin" width="auto" target="_blank" wrapping="false" enabled="true" visible="true" emphasized="false" subtle="false" press="_onLinkPress3"/>
-                                    <Text text="{dataAtendimento}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
-                                    <Text text="{contrato}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
-                                    <Text text="{municipio}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                    <Text text="{dataAtendimento}" width="auto" wrapping="true" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                    <Text text="{contrato}" width="auto" wrapping="true" textAlign="Begin" textDirection="Inherit" visible="true"/>
+                                    <Text text="{municipio}" width="auto"  wrapping="true" textAlign="Begin" textDirection="Inherit" visible="true"/>
                                     <ObjectNumber number="{totalItems}" unit="" emphasized="true" state="Success" />
                                 </cells>
                             </ColumnListItem>

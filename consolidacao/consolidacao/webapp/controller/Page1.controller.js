@@ -19,6 +19,10 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
     var userName = "";
     var userAdm = "";
     var EdmType = exportLibrary.EdmType;
+    var customWoFilter = [];
+    var customFornecedorFilter = [];
+    var customContratoFilter = [];
+    var fornecedorLocal;
     return BaseController.extend("com.sap.build.standard.consolidado.controller.Page1", {
         formatter: formatter,
         handleRouteMatched: function (oEvent) {
@@ -399,13 +403,13 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
                     };
                 }
             };
-            
+
             this._oTPC = null;
             var oPersonalizationService = sap.ushell.Container.getService("Personalization");
             var oPersonalizer = oPersonalizationService.getPersonalizer({
                 container: "Consolidacaohtml5.comsapbuildstandardconsolidado", // This key must be globally unique (use a key to
-                  // identify the app) Note that only 40 characters are allowed
-                 item: "woItemTable" // Maximum of 40 characters applies to this key as well
+                // identify the app) Note that only 40 characters are allowed
+                item: "woItemTable" // Maximum of 40 characters applies to this key as well
             });
             this._oTPC = new TablePersoController({
                 table: this.byId("woTable"),
@@ -429,6 +433,9 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
                     }
                 } else {
                     that.getView().byId("homePage").setVisible(true);
+                    aContexts.forEach(function (oContext) {
+                        var fornecedorLocal = oContext.getObject().CodFornecedorSAP;
+                    });
                 }
 
             });
@@ -496,7 +503,26 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
                 );
                 //to get access to the global model
                 this.getView().addDependent(this.DialogFilter);
-                this.DialogFilter.getModel().setSizeLimit(999999999999);
+                this.DialogFilter.getModel().setSizeLimit(500);
+
+                //to get access to the global model
+                this.getView().addDependent(this.DialogFilter);
+                var oModel = new sap.ui.model.odata.v4.ODataModel({
+                    groupId: "$direct",
+                    synchronizationMode: "None",
+                    serviceUrl: "/Consolidacaohtml5.comsapbuildstandardconsolidado/motor-de-regras/",
+                });
+                this.DialogFilter.setModel(oModel, "motor")
+            }
+
+            // update list binding
+            if (fornecedorLocal != "admin") {
+                var aFilters = [];
+                var filter = new Filter("workOrderID", sap.ui.model.FilterOperator.EQ, fornecedorLocal);
+                aFilters.push(filter);
+                var oBinding = sap.ui.core.Fragment.byId("DialogFilter", "workOrderIDCustomList").getBinding("items")
+                oBinding.sOperationMode = sap.ui.model.odata.OperationMode.Server;
+                oBinding.filter(aFilters);
             }
             // abre o value help dialog filtrando pelo input value
             this.DialogFilter.open();
@@ -539,7 +565,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
                         var oFilter = new sap.ui.model.Filter("status", sap.ui.model.FilterOperator.EQ, "3");
                     } else if (oItem.getText() == "Warning") {
                         var oFilter = new sap.ui.model.Filter("status", sap.ui.model.FilterOperator.EQ, "2");
-                    }else{
+                    } else {
                         var oFilter = new sap.ui.model.Filter("status", sap.ui.model.FilterOperator.EQ, "1");
                     }
                 } else {
@@ -548,6 +574,19 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
                 //	oFilter = new Filter(sPath, sOperator, sValue1, sValue2);
                 aFilters.push(oFilter);
             });
+
+            this.customWoFilter.forEach((wo) => {
+                var oFilter = new sap.ui.model.Filter("workOrderID", sap.ui.model.FilterOperator.EQ, wo);
+                aFilters.push(oFilter);
+            })
+            this.customFornecedorFilter.forEach((fornecedor) => {
+                var oFilter = new sap.ui.model.Filter("fornecedorSAP", sap.ui.model.FilterOperator.EQ, fornecedor);
+                aFilters.push(oFilter);
+            })
+            this.customContratoFilter.forEach((contrato) => {
+                var oFilter = new sap.ui.model.Filter("contrato", sap.ui.model.FilterOperator.EQ, contrato);
+                aFilters.push(oFilter);
+            })
             // apply filter settings
             oBinding.sOperationMode = sap.ui.model.odata.OperationMode.Server;
             oBinding.filter(aFilters);
@@ -623,9 +662,9 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
             if (valueAtendimento !== "") {
                 var datesplit = valueAtendimento.split(" - ");
                 var datetosplit = datesplit[0].split("-");
-                var dateto = datetosplit[2] + "-" + datetosplit[1] + "-" +  datetosplit[0];
+                var dateto = datetosplit[2] + "-" + datetosplit[1] + "-" + datetosplit[0];
                 var datefromsplit = datesplit[1].split("-");
-                var datefrom = datefromsplit[2] + "-" + datefromsplit[1] + "-" +  datefromsplit[0];
+                var datefrom = datefromsplit[2] + "-" + datefromsplit[1] + "-" + datefromsplit[0];
                 oFilter = new sap.ui.model.Filter("dataAtendimento", sap.ui.model.FilterOperator.BT, dateto, datefrom);
                 aFilters.push(oFilter);
             }
@@ -650,18 +689,18 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
                     var itemAux = [];
                     var indexAux = 0;
                     var CellsAux = [];
-                    if(i !== 0){
-                       indexAux = i - 1;
-                       itemAux = rowItems[indexAux];
-                       CellsAux = itemAux.getCells();
+                    if (i !== 0) {
+                        indexAux = i - 1;
+                        itemAux = rowItems[indexAux];
+                        CellsAux = itemAux.getCells();
                     }
 
                     var Cells = item.getCells();
                     if (Cells[1].getColor() == "red") {
                         exiteErro = "woError";
                         break;
-                    }else if(i !== 0){
-                        if(Cells[5].getText() !== CellsAux[5].getText() ){
+                    } else if (i !== 0) {
+                        if (Cells[5].getText() !== CellsAux[5].getText()) {
                             exiteErro = "fornecedorError";
                             break;
                         }
@@ -1016,11 +1055,115 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
                 oSheet.destroy();
             });
         },
-        onClearSelections: function(){
+        onClearSelections: function () {
             this.getView().byId("woTable").removeSelections(true);
         },
-         onExit: function(){
+        onExit: function () {
             this._oTPC.destroy();
+        },
+        onSelectionChangeWo: function (oEvent) {
+
+            this.customWoFilter = []
+
+
+            var oList = oEvent.getSource();
+            oList.getSelectedContexts().forEach((wo) => {
+                this.customWoFilter.push(wo.getProperty("workOrderID"))
+            })
+            if (this.customWoFilter.length > 0) {
+                var oCustomFilter = sap.ui.core.Fragment.byId("DialogFilter", "customWO")
+                oCustomFilter.setFilterCount(this.customWoFilter.length);
+                oCustomFilter.setSelected(true);
+            }
+        },
+        onSearchWo: function (oEvent) {
+            var aFilters = [];
+            var sQuery = oEvent.getSource().getValue();
+            if (sQuery && sQuery.length > 4) {
+                var filter = new Filter("workOrderID", sap.ui.model.FilterOperator.Contains, sQuery);
+                aFilters.push(filter);
+
+                // update list binding
+                var oBinding = sap.ui.core.Fragment.byId("DialogFilter", "workOrderIDCustomList").getBinding("items")
+                oBinding.sOperationMode = sap.ui.model.odata.OperationMode.Server;
+                oBinding.filter(aFilters);
+            }
+        },
+        onSelectionChangeFornecedor: function (oEvent) {
+
+            this.customFornecedorFilter = []
+
+
+            var oList = oEvent.getSource();
+            oList.getSelectedContexts().forEach((fornecedor) => {
+                this.customFornecedorFilter.push(fornecedor.getProperty("fornecedor"))
+            })
+            if (this.customFornecedorFilter.length > 0) {
+                var oCustomFilter = sap.ui.core.Fragment.byId("DialogFilter", "customFornecedor")
+                oCustomFilter.setFilterCount(this.customFornecedorFilter.length);
+                oCustomFilter.setSelected(true);
+            }
+        },
+        onSearchFornecedor: function (oEvent) {
+            var aFilters = [];
+            var sQuery = oEvent.getSource().getValue();
+            if (sQuery && sQuery.length > 4) {
+                var filter = new Filter("fornecedor", sap.ui.model.FilterOperator.Contains, sQuery);
+                aFilters.push(filter);
+
+                // update list binding
+                var oBinding = sap.ui.core.Fragment.byId("DialogFilter", "FornecedorCustomList").getBinding("items")
+                oBinding.sOperationMode = sap.ui.model.odata.OperationMode.Server;
+                oBinding.filter(aFilters);
+            }
+        },
+        onSelectionChangeContrato: function (oEvent) {
+
+            this.customContratoFilter = []
+
+
+            var oList = oEvent.getSource();
+            oList.getSelectedContexts().forEach((contrato) => {
+                this.customContratoFilter.push(contrato.getProperty("contrato"))
+            })
+            if (this.customContratoFilter.length > 0) {
+                var oCustomFilter = sap.ui.core.Fragment.byId("DialogFilter", "customContrato")
+                oCustomFilter.setFilterCount(this.customContratoFilter.length);
+                oCustomFilter.setSelected(true);
+            }
+        },
+        onSearchContrato: function (oEvent) {
+            var aFilters = [];
+            var sQuery = oEvent.getSource().getValue();
+            if (sQuery && sQuery.length > 4) {
+                var filter = new Filter("contrato", sap.ui.model.FilterOperator.Contains, sQuery);
+                aFilters.push(filter);
+
+                // update list binding
+                var oBinding = sap.ui.core.Fragment.byId("DialogFilter", "ContratoCustomList").getBinding("items")
+                oBinding.sOperationMode = sap.ui.model.odata.OperationMode.Server;
+                oBinding.filter(aFilters);
+            }
+        },
+        onResetFilters: function (oEvent) {
+            sap.ui.core.Fragment.byId("DialogFilter", "workOrderIDCustomList").removeSelections();
+            this.customWoFilter = []
+            var oCustomFilter = sap.ui.core.Fragment.byId("DialogFilter", "customWO");
+            oCustomFilter.setFilterCount(0);
+            oCustomFilter.setSelected(false);
+
+            sap.ui.core.Fragment.byId("DialogFilter", "FornecedorCustomList").removeSelections();
+            this.customFornecedorFilter = []
+            var oCustomFilter = sap.ui.core.Fragment.byId("DialogFilter", "customFornecedor");
+            oCustomFilter.setFilterCount(0);
+            oCustomFilter.setSelected(false);
+
+            sap.ui.core.Fragment.byId("DialogFilter", "ContratoCustomList").removeSelections();
+            this.customContratoFilter = []
+            var oCustomFilter = sap.ui.core.Fragment.byId("DialogFilter", "customContrato");
+            oCustomFilter.setFilterCount(0);
+            oCustomFilter.setSelected(false);
         }
+
     });
 }, /* bExport= */ true);

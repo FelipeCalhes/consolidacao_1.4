@@ -1,124 +1,119 @@
-<core:FragmentDefinition
-	xmlns="sap.m"
-	xmlns:core="sap.ui.core">
-	<ViewSettingsDialog
-		confirm="handleFilterDialogConfirm">
-		<filterItems>
-			<ViewSettingsFilterItem
-				text="SLA"
-				key="sla"
-				multiSelect="true"
-                items="{ path: '/FiltroSLA' }">
-				<items>
-					<ViewSettingsItem id="viewFilter9" text="{sla}" key="sla"/>
-				</items>
-			</ViewSettingsFilterItem>
-			<ViewSettingsFilterItem
-				text="Status"
-				key="status"
-				multiSelect="true">
-				<items>
-					<ViewSettingsItem id="viewFilter8"  text="Erro" key="status"/>
-					<ViewSettingsItem id="viewFilter10" text="Warning" key="status"/>
-					<ViewSettingsItem id="viewFilter11" text="Sucesso" key="status"/>
-				</items>
-			</ViewSettingsFilterItem>
-			<ViewSettingsFilterItem
-				text="WO"
-				key="workOrderID"
-				multiSelect="true"
-                items="{ path: '/TotalItems',
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+    <ViewSettingsDialog confirm="handleFilterDialogConfirm" resetFilters="onResetFilters">
+        <filterItems>
+            <ViewSettingsFilterItem text="SLA" key="sla" multiSelect="true" items="{ path: '/FiltroSLA' }">
+                <items>
+                    <ViewSettingsItem id="viewFilter9" text="{sla}" key="sla"/>
+                </items>
+            </ViewSettingsFilterItem>
+            <ViewSettingsFilterItem text="Status" key="status" multiSelect="true">
+                <items>
+                    <ViewSettingsItem id="viewFilter8" text="Erro" key="status"/>
+                    <ViewSettingsItem id="viewFilter10" text="Warning" key="status"/>
+                    <ViewSettingsItem id="viewFilter11" text="Sucesso" key="status"/>
+                </items>
+            </ViewSettingsFilterItem>
+            <!-- <ViewSettingsFilterItem text="WO" key="workOrderID" multiSelect="true" items="{ path: '/TotalItems',
 								parameters: {
                                     $apply: 'groupby((workOrderID))'
 								}  }">
 				<items>
 					<ViewSettingsItem id="viewFilter1" text="{workOrderID}" key="workOrderID"/>
 				</items>
-			</ViewSettingsFilterItem>
-			<ViewSettingsFilterItem
-				text="Tipo de WO"
-				key="tipoWo"
-				multiSelect="false"
-                items="{ path: '/TotalItems',
+			</ViewSettingsFilterItem> -->
+            <ViewSettingsCustomItem id="customWO" text="WO" key="workOrderID">
+                <customControl>
+                    <List id="workOrderIDCustomList" items="{ path: '/WorkOrderHelp' }" headerText="WO" growing="true" growingThreshold="50" growingScrollToLoad="true" mode="MultiSelect" selectionChange=".onSelectionChangeWo">
+                        <infoToolbar>
+                            <OverflowToolbar visible="true">
+                                <SearchField liveChange=".onSearchWo" width="100%" />
+                            </OverflowToolbar>
+                        </infoToolbar>
+                        <StandardListItem title="{workOrderID}" />
+                    </List>
+                </customControl>
+            </ViewSettingsCustomItem>
+            <ViewSettingsFilterItem text="Tipo de WO" key="tipoWo" multiSelect="false" items="{ path: '/TotalItems',
 								parameters: {
                                     $apply: 'groupby((tipoWo))'
 								} }">
-				<items>
-					<ViewSettingsItem id="viewFilter2" text="{tipoWo}" key="tipoWo"/>
-				</items>
-			</ViewSettingsFilterItem>
-			<ViewSettingsFilterItem
-				text="Técnico"
-				key="idTecnico"
-				multiSelect="true"
-                items="{ path: '/TotalItems',
+                <items>
+                    <ViewSettingsItem id="viewFilter2" text="{tipoWo}" key="tipoWo"/>
+                </items>
+            </ViewSettingsFilterItem>
+            <ViewSettingsFilterItem text="Técnico" key="idTecnico" multiSelect="true" items="{ path: '/TotalItems',
 								parameters: {
                                     $apply: 'groupby((idTecnico))'
 								} }">
-				<items>
-					<ViewSettingsItem id="viewFilter3" text="{idTecnico}" key="idTecnico"/>
-				</items>
-			</ViewSettingsFilterItem>
-			<ViewSettingsFilterItem
-				text="Fornecedor"
-				key="fornecedorSAP"
-				multiSelect="true"
-                items="{ path: '/TotalItems',
+                <items>
+                    <ViewSettingsItem id="viewFilter3" text="{idTecnico}" key="idTecnico"/>
+                </items>
+            </ViewSettingsFilterItem>
+            <!-- <ViewSettingsFilterItem text="Fornecedor" key="fornecedorSAP" multiSelect="true" items="{ path: '/TotalItems',
 								parameters: {
                                     $apply: 'groupby((fornecedorSAP))'
 								} }">
-				<items>
-					<ViewSettingsItem id="viewFilter4" text="{fornecedorSAP}" key="fornecedorSAP"/>
-				</items>
-			</ViewSettingsFilterItem>
-			<ViewSettingsFilterItem
-				text="Data de Atendimento"
-				key="dataAtendimento"
-				multiSelect="true"
-                items="{ path: '/TotalItems',
+                <items>
+                    <ViewSettingsItem id="viewFilter4" text="{fornecedorSAP}" key="fornecedorSAP"/>
+                </items>
+            </ViewSettingsFilterItem> -->
+            <ViewSettingsCustomItem id="customFornecedor" text="Fornecedor" key="fornecedorSAP">
+                <customControl>
+                    <List id="FornecedorCustomList" items="{motor>/FornecedorHelp}" headerText="Fornecedor" growing="true" growingThreshold="50" growingScrollToLoad="true" mode="MultiSelect" selectionChange=".onSelectionChangeFornecedor">
+                        <infoToolbar>
+                            <OverflowToolbar visible="true">
+                                <SearchField liveChange=".onSearchFornecedor" width="100%" />
+                            </OverflowToolbar>
+                        </infoToolbar>
+                        <StandardListItem title="{motor>fornecedor}" description="{motor>nomeFornecedor}" />
+                    </List>
+                </customControl>
+            </ViewSettingsCustomItem>
+            <ViewSettingsFilterItem text="Data de Atendimento" key="dataAtendimento" multiSelect="true" items="{ path: '/TotalItems',
 								parameters: {
                                     $apply: 'groupby((dataAtendimento))'
 								} }">
-				<items>
-					<ViewSettingsItem id="viewFilter5" text="{dataAtendimento}" key="dataAtendimento"/>
-				</items>
-			</ViewSettingsFilterItem>
-			<ViewSettingsFilterItem
-				text="Contrato"
-				key="contrato"
-				multiSelect="true"
-                items="{ path: '/TotalItems',
+                <items>
+                    <ViewSettingsItem id="viewFilter5" text="{dataAtendimento}" key="dataAtendimento"/>
+                </items>
+            </ViewSettingsFilterItem>
+            <!--  <ViewSettingsFilterItem text="Contrato" key="contrato" multiSelect="true" items="{ path: '/TotalItems',
 								parameters: {
                                     $apply: 'groupby((contrato))'
 								} }">
-				<items>
-					<ViewSettingsItem id="viewFilter60" text="{contrato}" key="contrato"/>
-				</items>
-			</ViewSettingsFilterItem>
-			<ViewSettingsFilterItem
-				text="Município"
-				key="municipio"
-				multiSelect="true"
-                items="{ path: '/TotalItems',
+                <items>
+                    <ViewSettingsItem id="viewFilter60" text="{contrato}" key="contrato"/>
+                </items>
+            </ViewSettingsFilterItem> -->
+            <ViewSettingsCustomItem id="customContrato" text="Contrato" key="contrato">
+                <customControl>
+                    <List id="ContratoCustomList" items="{ContratoHelp}" headerText="Fornecedor" growing="true" growingThreshold="50" growingScrollToLoad="true" mode="MultiSelect" selectionChange=".onSelectionChangeContrato">
+                        <infoToolbar>
+                            <OverflowToolbar visible="true">
+                                <SearchField liveChange=".onSearchContrato" width="100%" />
+                            </OverflowToolbar>
+                        </infoToolbar>
+                        <StandardListItem title="{contrato}"/>
+                    </List>
+                </customControl>
+            </ViewSettingsCustomItem>
+            <ViewSettingsFilterItem text="Município" key="municipio" multiSelect="true" items="{ path: '/TotalItems',
 								parameters: {
                                     $apply: 'groupby((municipio))'
 								} }">
-				<items>
-					<ViewSettingsItem id="viewFilter6" text="{municipio}" key="municipio"/>
-				</items>
-			</ViewSettingsFilterItem>
-			<ViewSettingsFilterItem
-				text="Total de items"
-				key="totalItems"
-				multiSelect="true"
-                items="{ path: '/TotalItems',
+                <items>
+                    <ViewSettingsItem id="viewFilter6" text="{municipio}" key="municipio"/>
+                </items>
+            </ViewSettingsFilterItem>
+            <ViewSettingsFilterItem text="Total de items" key="totalItems" multiSelect="true" items="{ path: '/TotalItems',
 								parameters: {
                                     $apply: 'groupby((totalItems))'
 								} }">
-				<items>
-					<ViewSettingsItem id="viewFilter7" text="{totalItems}" key="totalItems"/>
-				</items>
-			</ViewSettingsFilterItem>
-		</filterItems>
-	</ViewSettingsDialog>
+                <items>
+                    <ViewSettingsItem id="viewFilter7" text="{totalItems}" key="totalItems"/>
+                </items>
+            </ViewSettingsFilterItem>
+        </filterItems>
+    </ViewSettingsDialog>
 </core:FragmentDefinition>
