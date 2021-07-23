@@ -88,7 +88,7 @@
             </ViewSettingsFilterItem> -->
             <ViewSettingsCustomItem id="customContrato" text="Contrato" key="contrato">
                 <customControl>
-                    <List id="ContratoCustomList" items="{ContratoHelp}" headerText="Fornecedor" growing="true" growingThreshold="50" growingScrollToLoad="true" mode="MultiSelect" selectionChange=".onSelectionChangeContrato">
+                    <List id="ContratoCustomList" items="{/ContratoHelp}" headerText="Contrato" growing="true" growingThreshold="50" growingScrollToLoad="true" mode="MultiSelect" selectionChange=".onSelectionChangeContrato">
                         <infoToolbar>
                             <OverflowToolbar visible="true">
                                 <SearchField liveChange=".onSearchContrato" width="100%" />
