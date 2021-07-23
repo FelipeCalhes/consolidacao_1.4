@@ -1084,9 +1084,9 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
             this._oTPC.destroy();
         },
         onSelectionChangeWo: function (oEvent) {
-
-            this.customWoFilter = []
-
+            if (!this.customWoFilter) {
+                this.customWoFilter = [];
+            }
 
             var oList = oEvent.getSource();
             oList.getSelectedContexts().forEach((wo) => {
@@ -1096,6 +1096,8 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
                 var oCustomFilter = sap.ui.core.Fragment.byId("DialogFilter", "customWO")
                 oCustomFilter.setFilterCount(this.customWoFilter.length);
                 oCustomFilter.setSelected(true);
+            }else{
+                this.customWoFilter = []
             }
         },
         onSearchWo: function (oEvent) {
@@ -1116,10 +1118,9 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
             }
         },
         onSelectionChangeFornecedor: function (oEvent) {
-
-            this.customFornecedorFilter = []
-
-
+            if (!this.customFornecedorFilter) {
+                this.customFornecedorFilter = [];
+            }
             var oList = oEvent.getSource();
             oList.getSelectedContexts().forEach((fornecedor) => {
                 this.customFornecedorFilter.push(fornecedor.getProperty("fornecedor"))
@@ -1128,6 +1129,8 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
                 var oCustomFilter = sap.ui.core.Fragment.byId("DialogFilter", "customFornecedor")
                 oCustomFilter.setFilterCount(this.customFornecedorFilter.length);
                 oCustomFilter.setSelected(true);
+            }else{
+                this.customFornecedorFilter = []
             }
         },
         onSearchFornecedor: function (oEvent) {
@@ -1148,9 +1151,9 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
             }
         },
         onSelectionChangeContrato: function (oEvent) {
-
-            this.customContratoFilter = []
-
+            if (!this.customContratoFilter) {
+                this.customContratoFilter = [];
+            }
 
             var oList = oEvent.getSource();
             oList.getSelectedContexts().forEach((contrato) => {
@@ -1160,6 +1163,8 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
                 var oCustomFilter = sap.ui.core.Fragment.byId("DialogFilter", "customContrato")
                 oCustomFilter.setFilterCount(this.customContratoFilter.length);
                 oCustomFilter.setSelected(true);
+            }else{
+                this.customContratoFilter = [];
             }
         },
         onSearchContrato: function (oEvent) {
