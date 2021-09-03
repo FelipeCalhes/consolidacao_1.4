@@ -2,7 +2,10 @@
     xmlns:core="sap.ui.core">
     <ViewSettingsDialog confirm="handleFilterDialogConfirm" resetFilters="onResetFilters">
         <filterItems>
-            <ViewSettingsFilterItem text="SLA" key="sla" multiSelect="true" items="{ path: '/FiltroSLA' }">
+            <ViewSettingsFilterItem text="SLA" key="sla" multiSelect="true" items="{ path: '/TotalItems',
+								parameters: {
+                                    $apply: 'groupby((sla))'
+								}  }">
                 <items>
                     <ViewSettingsItem id="viewFilter9" text="{sla}" key="sla"/>
                 </items>
@@ -34,7 +37,7 @@
                     </List>
                 </customControl>
             </ViewSettingsCustomItem>
-            <ViewSettingsFilterItem text="Tipo de WO" key="tipoWo" multiSelect="false" items="{ path: '/TotalItems',
+            <ViewSettingsFilterItem text="Tipo de WO" key="tipoWo" multiSelect="true" items="{ path: '/TotalItems',
 								parameters: {
                                     $apply: 'groupby((tipoWo))'
 								} }">

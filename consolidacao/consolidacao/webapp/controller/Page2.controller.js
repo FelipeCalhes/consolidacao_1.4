@@ -311,7 +311,7 @@
                 // apply the selected group settings
                 oBinding.sOperationMode = sap.ui.model.odata.OperationMode.Server;
                 oBinding.sort(aGroups);
-            } else if (this.groupReset) {
+            } else {//if (this.groupReset) {
                 oBinding.sort();
                 this.groupReset = false;
             }
@@ -563,7 +563,8 @@
                     serviceUrl: this._sServiceUrl,
                     headers: oModel.getHttpHeaders ? oModel.getHttpHeaders() : null,
                     count: oRowBinding.getLength ? oRowBinding.getLength() : null,
-                    useBatch: true // Default for ODataModel V2
+                    useBatch: true, // Default for ODataModel V2
+                    sizeLimit: 1000
                 },
                 fileName: fileName,
                 worker: false // We need to disable worker because we are using a MockServer as OData Service

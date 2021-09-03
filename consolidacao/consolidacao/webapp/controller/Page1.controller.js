@@ -524,13 +524,16 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
                 oBinding.sOperationMode = sap.ui.model.odata.OperationMode.Server;
                 oBinding.filter(aFilters);
 
+                /*aFilters = [];
                 var filter = new Filter("fornecedor", sap.ui.model.FilterOperator.EQ, fornecedorLocal);
                 aFilters.push(filter);
                 var oBinding = sap.ui.core.Fragment.byId("DialogFilter", "FornecedorCustomList").getBinding("items")
                 oBinding.sOperationMode = sap.ui.model.odata.OperationMode.Server;
-                oBinding.filter(aFilters);
+                oBinding.filter(aFilters);*/
+                sap.ui.core.Fragment.byId("DialogFilter", "FornecedorCustomList").setVisible(false);
 
-                var filter = new Filter("fornecedorSAP", sap.ui.model.FilterOperator.EQ, fornecedorLocal);
+                aFilters = [];
+                var filter = new Filter("fornecedorSAP", sap.ui.model.FilterOperator.Contains, fornecedorLocal);
                 aFilters.push(filter);
                 var oBinding = sap.ui.core.Fragment.byId("DialogFilter", "ContratoCustomList").getBinding("items")
                 oBinding.sOperationMode = sap.ui.model.odata.OperationMode.Server;
@@ -580,6 +583,13 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
                         var oFilter = new sap.ui.model.Filter("status", sap.ui.model.FilterOperator.EQ, "2");
                     } else {
                         var oFilter = new sap.ui.model.Filter("status", sap.ui.model.FilterOperator.EQ, "1");
+                    }
+                    aFilters.push(oFilter);
+                } else if (oItem.getKey() == "municipio") {
+                    if (oItem.getText() == "") {
+                        var oFilter = new sap.ui.model.Filter(oItem.getKey(), sap.ui.model.FilterOperator.EQ, null);
+                    } else {
+                        var oFilter = new sap.ui.model.Filter(oItem.getKey(), sap.ui.model.FilterOperator.EQ, oItem.getText());
                     }
                     aFilters.push(oFilter);
                 } else {
@@ -649,7 +659,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
                 // apply the selected group settings
                 oBinding.sOperationMode = sap.ui.model.odata.OperationMode.Server;
                 oBinding.sort(aGroups);
-            } else if (this.groupReset) {
+            } else {//if (this.groupReset) {
                 oBinding.sort();
                 this.groupReset = false;
             }
@@ -1066,7 +1076,8 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
                     serviceUrl: this._sServiceUrl,
                     headers: oModel.getHttpHeaders ? oModel.getHttpHeaders() : null,
                     count: oRowBinding.getLength ? oRowBinding.getLength() : null,
-                    useBatch: true // Default for ODataModel V2
+                    useBatch: true, // Default for ODataModel V2
+                    sizeLimit: 1000
                 },
                 fileName: 'Cabeçalho da WO.xlsx',
                 worker: false // We need to disable worker because we are using a MockServer as OData Service
@@ -1096,7 +1107,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
                 var oCustomFilter = sap.ui.core.Fragment.byId("DialogFilter", "customWO")
                 oCustomFilter.setFilterCount(this.customWoFilter.length);
                 oCustomFilter.setSelected(true);
-            }else{
+            } else {
                 this.customWoFilter = []
             }
         },
@@ -1129,7 +1140,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
                 var oCustomFilter = sap.ui.core.Fragment.byId("DialogFilter", "customFornecedor")
                 oCustomFilter.setFilterCount(this.customFornecedorFilter.length);
                 oCustomFilter.setSelected(true);
-            }else{
+            } else {
                 this.customFornecedorFilter = []
             }
         },
@@ -1163,7 +1174,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
                 var oCustomFilter = sap.ui.core.Fragment.byId("DialogFilter", "customContrato")
                 oCustomFilter.setFilterCount(this.customContratoFilter.length);
                 oCustomFilter.setSelected(true);
-            }else{
+            } else {
                 this.customContratoFilter = [];
             }
         },
