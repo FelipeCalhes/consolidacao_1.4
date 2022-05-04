@@ -13,7 +13,7 @@ modules:
     properties:
       forwardAuthToken: true
       name: motorderegras
-      url: https://xsmotor-regras.cfapps.eu10.hana.ondemand.com
+      url: https://claro-prd-prd-xsmotor-regras.cfapps.br10.hana.ondemand.com
   - name: ConsolidadoWoItem-destination
     group: destinations
     properties:
@@ -25,7 +25,7 @@ modules:
     properties:
       forwardAuthToken: true
       name: workorder
-      url: https://work-order.cfapps.eu10.hana.ondemand.com
+      url: https://claro-prd-prd-work-order.cfapps.br10.hana.ondemand.com
   parameters:
     disk-quota: 256M
     memory: 256M

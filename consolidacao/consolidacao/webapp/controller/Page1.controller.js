@@ -23,6 +23,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
     var customFornecedorFilter = [];
     var customContratoFilter = [];
     var fornecedorLocal;
+    var oGlobalBusyDialog = new sap.m.BusyDialog();
     return BaseController.extend("com.sap.build.standard.consolidado.controller.Page1", {
         formatter: formatter,
         handleRouteMatched: function (oEvent) {
@@ -756,39 +757,48 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
                     var oList = this.getView().byId("baixaTable"),
                         oBinding = oList.getBinding("items"),
                         that = this;
-                    var oGlobalBusyDialog = new sap.m.BusyDialog();
+                    
                     oGlobalBusyDialog.open();
                     sap.ui.getCore().getMessageManager().removeAllMessages();
-                    oBinding.attachCreateCompleted(function (oEvent) {
-                        oGlobalBusyDialog.close();
-                        if (oEvent.getParameter("success")) {
-                            MessageBox.show(
-                                "Dados atualizados com sucesso", {
-                                icon: MessageBox.Icon.SUCCESS,
-                                title: "Dados gravados!",
-                                onClose: function (oAction) {
-                                    var oTable = that.byId("woTable"),
-                                        oBinding = oTable.getBinding("items"),
-                                        aFilters = [];
-                                    //      if (userAdm === "X") {
-                                    //         var oFilter = new sap.ui.model.Filter("user", sap.ui.model.FilterOperator.EQ, "admin");
-                                    //         aFilters.push(oFilter);
-                                    //    }
-                                    oBinding.sOperationMode = sap.ui.model.odata.OperationMode.Server;
-                                    oBinding.filter(aFilters);
+                    if(!oBinding.mEventRegistry.createCompleted || oBinding.mEventRegistry.createCompleted.length === 0)
+                        oBinding.attachCreateCompleted(function (oEvent) {
+                            oGlobalBusyDialog.close();
+                            var oTable = that.byId("woTable")
+                            var oBinding = oTable.getBinding("items")
+                            var aFilters = []
+                            
+                            oBinding.sOperationMode = sap.ui.model.odata.OperationMode.Server;
+                            oBinding.filter(aFilters);
+                            oBinding.refresh();
+                            if (oEvent.getParameter("success")) {
+                                MessageBox.show(
+                                    "Dados atualizados com sucesso", {
+                                    icon: MessageBox.Icon.SUCCESS,
+                                    title: "Dados gravados!",
+                                    onClose: function (oAction) {
+                                        var oTable = that.byId("woTable"),
+                                            oBinding = oTable.getBinding("items"),
+                                            aFilters = [];
+                                        //      if (userAdm === "X") {
+                                        //         var oFilter = new sap.ui.model.Filter("user", sap.ui.model.FilterOperator.EQ, "admin");
+                                        //         aFilters.push(oFilter);
+                                        //    }
+                                        oBinding.sOperationMode = sap.ui.model.odata.OperationMode.Server;
+                                        oBinding.filter(aFilters);
+                                        oBinding.refresh();
+                                    }
                                 }
+                                );
+                            } else {
+                                sap.m.MessageBox.show(
+                                    "Falha no envio dos dados. Verifique os dados e tente novamente",
+                                    sap.m.MessageBox.Icon.ERROR,
+                                    "Erro"
+                                );
+                                that.byId("baixaTable").getBinding("items").resetChanges();
+                                //   sap.ui.getCore().getMessageManager().removeAllMessages();
                             }
-                            );
-                        } else {
-                            sap.m.MessageBox.show(
-                                sap.ui.getCore().getMessageManager().getMessageModel().getData()[0].message,
-                                sap.m.MessageBox.Icon.ERROR,
-                                "Erro ao efetuar baixa"
-                            );
-                            that.byId("baixaTable").getBinding("items").resetChanges();
-                            //   sap.ui.getCore().getMessageManager().removeAllMessages();
-                        }
-                    }.bind(this));
+                        }.bind(this));
                     var oContext = oBinding.create({
                         "consolidado": "Baixa de WOS",
                         "wos": oData//["25666|24672", "25666|24663"]
@@ -898,7 +908,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
                     }
                 } else {
                     sap.m.MessageBox.show(
-                        sap.ui.getCore().getMessageManager().getMessageModel().getData()[0].message,
+                        "Falha no envio dos dados",
                         sap.m.MessageBox.Icon.ERROR,
                         "Erro ao efetuar baixa"
                     );

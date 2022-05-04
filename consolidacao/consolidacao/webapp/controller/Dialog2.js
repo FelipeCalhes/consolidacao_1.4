@@ -89,9 +89,9 @@ sap.ui.define([
                         );
                     } else {
                         sap.m.MessageBox.show(
-                            sap.ui.getCore().getMessageManager().getMessageModel().getData()[0].message,
+                            "Falha no envio dos dados. Verifique os dados e tente novamente",
                             sap.m.MessageBox.Icon.ERROR,
-                            "Erro ao efetuar baixa"
+                            "Erro na importação"
                         );
                         oListBinding.resetChanges();
                         //sap.ui.getCore().getMessageManager().removeAllMessages();

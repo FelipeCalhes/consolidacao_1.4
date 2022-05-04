@@ -326,13 +326,13 @@
                 oBinding = oList.getBinding("items");
             $.each(oList.getItems(), function (index, value) {
                 var quantidade = oList.getItems()[index].getCells()[4].getValue();
-                if (quantidade == "" || quantidade == 0) {
+                if (quantidade == "" || quantidade <= 0) {
                     quantidadeEmBraco = true;
                 }
             });
             if (quantidadeEmBraco) {
                 sap.m.MessageBox.show(
-                    "Um ou mais materiais estão com a quantidade vazia, favor verifique e tente novamente.",
+                    "Um ou mais materiais estão com a quantidade inválida, favor verifique e tente novamente.",
                     sap.m.MessageBox.Icon.ERROR,
                     "Erro ao gravar os dados"
                 );
